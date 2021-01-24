@@ -2,6 +2,7 @@
 class BaseJS {
     constructor() {
         this.api = null;
+        this.apiFilter = null;
         this.setDataUrl();
         this.initEvents();
         this.loadDataforCombobox();
@@ -16,9 +17,18 @@ class BaseJS {
         $('#btnAdd').click(function () {
             //Hiển thị dialog thông tin chi tiết:
             $('.dialog-detail').show();
-            $('#txtCustomerCode').focus();
+            $('input[focus]').focus();
             me.method = "POST";
-           // me.loadDataforCombobox();
+            var inputId = $('input[apiGetId]');
+            var apiGetId = $(inputId).attr('apiGetId');
+            var newId = "";
+            $.ajax({
+                url: apiGetId,
+                method: "GET"
+            }).done(function (res) {
+                var inputId = $('input[apiGetId]').val(res);
+            }).fail(function (res) {
+            })
         })
 
         $('table tbody').on('click', 'tr', function () {
@@ -30,25 +40,30 @@ class BaseJS {
         })
 
         //Load lại dữ liệu khi ấn button Load
-        //$('#btnRefresh').click(function () {
-        //    //Hiểnthị customer thông tin chi tiết sau khi Load data:
-        //    $('#table').remove('tr');
-        //    me.loadData();
-        //})
-        $('#btnDelete').click(function () {
-            var recordId = $(me.rowSelected).data('recordId');
-            debugger
-            $.ajax({
-                url: me.api + "/id?id=" + `${recordId}`,
-                method: "DELETE",               
-            }).done(function (res) {
-                debugger
-                alert("Xóa thành công");
-            }).fail(function (res) {
-                debugger;
-                alert("fail");
-            })
+        $('#btnRefresh').click(function () {
+            me.Filter();
+
         })
+
+        $('#btnDelete').click(function () {
+            $('.noti').show();
+
+        })
+        //$('#btnDelete').click(function () {
+        //    $('.noti').show();
+        //    var recordId = $(me.rowSelected).data('recordId');
+        //    debugger
+        //    $.ajax({
+        //        url: me.api + "/id?id=" + `${recordId}`,
+        //        method: "DELETE",
+        //    }).done(function (res) {
+        //        debugger
+        //        alert("Xóa thành công");
+        //    }).fail(function (res) {
+        //        debugger;
+        //        alert("fail");
+        //    })
+        //}
         //Ẩn form chi tiết khi ấn X:
         $('#btnX').click(function () {
             $('.dialog-detail').hide();
@@ -59,7 +74,6 @@ class BaseJS {
         $('#btnCancel').click(function () {
             $('.dialog-detail').hide();
         })
-
         $('#btnSave').click(function () {
             var inputvaidates = $('input[required], input[type="email"]');
             $.each(inputvaidates, function (index, input) {
@@ -67,8 +81,7 @@ class BaseJS {
             })
             var inputNotValids = $('input[validate="false"]');
             if (inputNotValids && inputNotValids.length > 0) {
-                alert("Dữ liệu không hợp lệ vui lòng kiểm tra lại.");
-                inputNotValids[0].focus;
+                inputNotValids[0].focus();
                 return;
             }
 
@@ -77,10 +90,14 @@ class BaseJS {
             $.each(inputs, function (index, input) {
                 var propertyName = $(this).attr('fieldName');
                 var value = $(this).val();
+                var formatType = $(input).attr('formatType');
+                if (formatType == "money")
+                    value =value.split('.').join("");
                 entity[propertyName] = value;
             })
             if (me.method == "PUT") {
-                entity.EmployeeId = $(me.rowSelected).data('recordId');
+
+                entity[me.keyId] = $(me.rowSelected).data('recordId');
             }
             console.log(me.method);
             debugger
@@ -90,15 +107,24 @@ class BaseJS {
                 data: JSON.stringify(entity),
                 contentType: 'application/json'
             }).done(function (res) {
-                $('.dialog-detail').hide();
-                me.loadData();
-                console.log("done");
-                debugger
+                if (res.success) {
+                    $('.dialog-detail').hide();
+                    me.loadData();
+                }
+                else {
+                    $.each(res.Message, function (index, obj) {
+                        var contentMessage = $(`<div class="noti-content-detail-mess"></div>`);
+                        contentMessage.append(obj);
+                        $('.noti-content-mess').append(contentMessage);
+                    })
+                    $('.noti-mess').show();
+                    debugger;
+                }
+
             }).fail(function (res) {
-                console.log("fail");
-                debugger
+
             })
-         
+
         })
 
         // Hiển thị thông tin chi tiết khi nhấn đúp chuột chọn 1 dòng
@@ -114,25 +140,53 @@ class BaseJS {
             }).done(function (res) {
                 var inputs = $('input[fieldName],select[fieldName]');
                 $.each(inputs, function (index, input) {
-                    
+
                     var propertyName = $(this).attr('fieldName');
                     var value = res[0][propertyName];
                     if ($(this).attr('type') == "date") {
-                        value=regenDate(value);
+                        value = regenDate(value);
                     }
-                    
+
                     $(this).val(value);
                 })
-                debugger
+                
             }).fail(function (res) {
 
             })
 
         })
+        $('#btnNext').click(function () {
+            var recordId = $(me.rowSelected).data('recordId');
+            $.ajax({
+                url: me.api + "?id=" + `${recordId}`,
+                method: "DELETE"
+            }).done(function (res) {
+                $('.noti').hide();
+                me.loadData();
+            }).fail(function (res) {
+                alert("not done");
 
+            })
+        })
+        $('#btnCancelMessage').click(function () {
+            $('.noti').hide();
+            return;
+        })
+        $('#btnXMessage').click(function () {
+            $('.noti').hide();
+            return;
+        })
 
+        $('#btnNextMess').click(function () {
+            $('noti-content-mess').html("");
+            $('.noti-mess').hide();
+
+        })
+        $('#btnXMessageMess').click(function () {
+            $('.noti-mess').hide();
+        })
         $('input[required]').blur(function () {
-           
+
             var value = $(this).val();
             if (!value) {
                 $(this).addClass('border-red');
@@ -144,7 +198,7 @@ class BaseJS {
             }
         })
 
-        
+
         $('input[type="email"]').blur(function () {
             var value = $(this).val();
             var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
@@ -162,49 +216,54 @@ class BaseJS {
 
     }
     loadData() {
-        $('table tbody').empty();
+        var me = this;
         try {
-            var columns = $('table thead th');
             var api = this.api;
             $.ajax({
                 url: api,
                 method: "GET",
             }).done(function (res) {
-                $.each(res, function (index, obj) {
-                    var tr = $(`<tr></tr>`);
-                    $(tr).data('recordId', obj["EmployeeId"]);
-                    $.each(columns, function (index, th) {
-                        var td = $(`<td><div><span></span></div></td>`);
-                        var fieldName = $(th).attr('fieldname');
-                        var value = obj[fieldName];
-                        var formatType = $(th).attr('formatType');
-                        switch (formatType) {
-                            case "ddmmyyyy":
-                                value = formatDate(value);
-                                break;
-                            case "Money":
-                                value = formatMoney(value);
-                                break;
-                            case "Gender":
-                                value = formatGender(value);
-                                break;
-                            case "WorkStatus":
-                                value = formatWorkStatus(value);
-                                break;
-                            default:
-                        }
-                        td.append(value);
-                        $(tr).append(td);
-                    })
-                    $('table tbody').append(tr);
-
-                })
+                me.BindDataToTable(res);
             }).fail(function (res) {
 
             })
         } catch (e) {
         }
+    }
+    BindDataToTable(res) {
+        var me = this;
+        var columns = $('table thead th');
+        $('table tbody').empty();
+        me.keyId = $('table[keyId]').attr('keyId');
+        $.each(res, function (index, obj) {
+            var tr = $(`<tr></tr>`);
+            $(tr).data('recordId', obj[me.keyId]);
+            $.each(columns, function (index, th) {
+                var td = $(`<td><div><span></span></div></td>`);
+                var fieldName = $(th).attr('fieldname');
+                var value = obj[fieldName];
+                var formatType = $(th).attr('formatType');
+                switch (formatType) {
+                    case "ddmmyyyy":
+                        value = formatDate(value);
+                        break;
+                    case "Money":
+                        value = formatMoney(value) + " VND";
+                        break;
+                    case "Gender":
+                        value = formatGender(value);
+                        break;
+                    case "WorkStatus":
+                        value = formatWorkStatus(value);
+                        break;
+                    default:
+                }
+                td.append(value);
+                $(tr).append(td);
+            })
+            $('table tbody').append(tr);
 
+        })
     }
 
     loadDataforCombobox() {
@@ -231,5 +290,47 @@ class BaseJS {
             })
         })
     }
+
+    Filter() {
+        var me = this;
+        var fieldFilters = $('input[fieldFilter], select[fieldFilter]');
+        //kiem tra xem co du lieu can tim ko
+        var checkValue = "";
+        $.each(fieldFilters, function (index, fieldFilter) {
+            var value = $(fieldFilter).val();
+            if (value)
+                checkValue = "ok";
+        })
+        if (!checkValue) {
+            me.loadData();
+            return;
+        }
+        var api = me.api;
+        //thu thập dữ liệu cần lọc built thành api
+
+        $.each(fieldFilters, function (index, fieldFilter) {
+            var fieldFilterName = $(fieldFilter).attr('fieldFilter');
+            api = api + "/" + `${fieldFilterName}`;
+
+        })
+        api = api + "?";
+        $.each(fieldFilters, function (index, fieldFilter) {
+            var fieldFilterName = $(fieldFilter).attr('fieldFilter');
+            var value = $(fieldFilter).val();
+            api = api + `${fieldFilterName}=` + `${value}&`;
+
+        })
+        $.ajax({
+            url: api,
+            method: "GET"
+        }).done(function (res) {
+            //load lai data vo table
+            me.BindDataToTable(res);
+        })
+
+    }
+
+
+
 }
 

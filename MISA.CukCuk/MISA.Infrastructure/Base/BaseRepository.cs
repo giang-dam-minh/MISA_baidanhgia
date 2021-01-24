@@ -24,6 +24,12 @@ namespace MISA.Infrastructure.Base
             _dbConnection = new MySqlConnection(_configuration.GetConnectionString("MISAConnectionString"));
             common = new Common();
         }
+        /// <summary>
+        /// Thêm object vào csdl tương ứng
+        /// </summary>
+        /// <param name="entity">object cần thêm</param>
+        /// <returns>số bản ghi thêm được</returns>
+        /// createdBy: giangdm (20/01/2021)
         public int Add(MISAEntity entity)
         {
             var rowEffect = 0;
@@ -35,6 +41,14 @@ namespace MISA.Infrastructure.Base
             }
            return rowEffect;
         }
+        /// <summary>
+        /// Kiểm tra có hay ko theo tiêu chí truyển vào
+        /// </summary>
+        /// <param name="entity">bảng cần kiểm tra</param>
+        /// <param name="property">thông tin cần kiểm tra</param>
+        /// <param name="actionType">kiểu kiểm tra</param>
+        /// <returns>true nếu chưa có, false ngược lại</returns>
+        /// createdBy: giangdm (20/01/2021)
         public bool CheckBySpec(MISAEntity entity,PropertyInfo property,string actionType="add")
         {
             var sql = "";
@@ -48,27 +62,50 @@ namespace MISA.Infrastructure.Base
             var entityCheck = _dbConnection.Query<MISAEntity>(sql).FirstOrDefault();
             return entityCheck == null ? true : false;
         }
-
+        /// <summary>
+        /// Xóa theo id
+        /// </summary>
+        /// <param name="id">id cần xóa</param>
+        /// <returns>số bản ghi xóa được</returns>
+        /// createdBy: giangdm (20/01/2021)
         public int DeleteById(Guid id)
         {
             return _dbConnection.Execute($"delete from {_tableName} where {_tableName}Id = '{id.ToString()}'");
         }
-
+        /// <summary>
+        /// đóng kết nối khi ko sử dụng
+        /// </summary>
+        /// createdBy: giangdm (21/01/2021)
         public void Dispose()
         {
             if (_dbConnection.State == ConnectionState.Open)
                 _dbConnection.Close();
         }
-
+        /// <summary>
+        /// lấy ra tất cả thông tin
+        /// </summary>
+        /// <returns>object</returns>
+        /// createdBy: giangdm (20/01/2021)
         public IEnumerable<MISAEntity> Get()
         {
             return _dbConnection.Query<MISAEntity>($"Proc_Get{_tableName}s",commandType:CommandType.StoredProcedure);
         }
+        /// <summary>
+        /// Lấy thông tin theo id
+        /// </summary>
+        /// <param name="id">id cần lấy</param>
+        /// <returns>object</returns>
+        /// createdBy: giangdm (20/01/2021)
         public IEnumerable<MISAEntity> GetById(string id)
         {
             return _dbConnection.Query<MISAEntity>($"select * from {_tableName} where {_tableName}Id= '{id}'");
         }
-
+        /// <summary>
+        /// Cập nhật thông tin
+        /// </summary>
+        /// <param name="entiy">object cần cập nhật</param>
+        /// <returns>số bản ghi được cập nhật</returns>
+        /// createdBy: giangdm (20/01/2021)
         public int Update(MISAEntity entiy)
         {
             return _dbConnection.Execute($"Proc_Update{_tableName}", param: common.GetParam(entiy),commandType:CommandType.StoredProcedure);

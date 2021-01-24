@@ -7,6 +7,12 @@ namespace MISA.ApplicationCore.NewFolder
 {
     public class Common
     {
+        /// <summary>
+        /// Mapping data đầu vào cho thủ tục sql
+        /// </summary>
+        /// <param name="entity">object</param>
+        /// <returns>object đã map dữ liệu</returns>
+        /// createdBy: giangdm (20/02/2021)
         public DynamicParameters GetParam(object entity)
         {
             DynamicParameters dynamicParameters = new DynamicParameters();

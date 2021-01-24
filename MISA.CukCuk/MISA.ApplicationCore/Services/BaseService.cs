@@ -13,6 +13,12 @@ namespace MISA.ApplicationCore.Services
         {
             _baseRepository = baseRepository;
         }
+        /// <summary>
+        /// Service thêm 1 bản ghi vào csdl
+        /// </summary>
+        /// <param name="entity">Object</param>
+        /// <returns>Kết quả thực thi</returns>
+        /// createdBy: giangdm (20/01/2021)
         public virtual ServiceResult Add(MISAEntity entity)
         {
             var res = Validate(entity,"add");
@@ -23,7 +29,12 @@ namespace MISA.ApplicationCore.Services
             res.Data = _baseRepository.Add(entity);
             return res;
         }
-
+        /// <summary>
+        /// Xóa 1 bản ghi theo id
+        /// </summary>
+        /// <param name="id">id cần xóa</param>
+        /// <returns>Kết quả thực thi</returns>
+        /// createdBy: giangdm (20/01/2021)
         public ServiceResult Delete(Guid id)
         {
             var res = new ServiceResult();
@@ -32,15 +43,31 @@ namespace MISA.ApplicationCore.Services
             res.Message = "Xóa thành công";
             return res;
         }
-
+        /// <summary>
+        /// Lấy tất cả thông tin từ repository
+        /// </summary>
+        /// <returns>Object</returns>
+        /// createdBy: giangdm (20/01/2021)
         public IEnumerable<MISAEntity> GET()
         {
             return _baseRepository.Get();
         }
+        /// <summary>
+        /// Lấy thông tin theo id
+        /// </summary>
+        /// <param name="id">id cần lấy</param>
+        /// <returns>Object</returns>
+        /// createdBy: giangdm (20/01/2021)
         public IEnumerable<MISAEntity> GetById(string id)
         {
             return _baseRepository.GetById(id);
         }
+        /// <summary>
+        /// Cập nhật thông tin
+        /// </summary>
+        /// <param name="entity">Object cần cập nhật</param>
+        /// <returns>Kết quả thực thi</returns>
+        /// createdBy: giangdm (20/01/2021)
         public ServiceResult Update(MISAEntity entity)
         {
             var res = Validate(entity, "update");
@@ -51,6 +78,13 @@ namespace MISA.ApplicationCore.Services
             res.Data = _baseRepository.Update(entity);
             return res;
         }
+        /// <summary>
+        /// Kiếm tra dữ liệu hợp lệ
+        /// </summary>
+        /// <param name="entity">Object cần kiểm tra</param>
+        /// <param name="actionType">Kiểu thực thi(Thêm, sửa)</param>
+        /// <returns>Kết quả thực thi</returns>
+        /// createdBy: giangdm (20/01/2021)
         private ServiceResult Validate(MISAEntity entity,string actionType)
         {
             var res = new ServiceResult();

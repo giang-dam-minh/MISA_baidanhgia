@@ -16,10 +16,28 @@ namespace MISA.CukCuk.Api.Api
         {
             _employeeService = employeeService;
         }
-        [HttpGet("code/fullname/position/department")]
-        public IActionResult GetEmployeeByAnySpec(string employeeCode=null, string fullName=null, string positionId=null, string departmentId=null)
+        /// <summary>
+        /// API lấy ra danh sách nhân viên theo tiêu chí(mã, tên), vị trí, phòng ban (dùng cho filter)
+        /// </summary>
+        /// <param name="spec">tiêu chí bất kỳ</param>
+        /// <param name="positionId">vị trí</param>
+        /// <param name="departmentId">phòng ban</param>
+        /// <returns>object</returns>
+        /// createdBy: giangdm (24/01/2021)
+        [HttpGet("spec/position/department")]
+        public IActionResult GetEmployeeByAnySpec(string spec = null, string positionId = null, string departmentId = null)
         {
-            return Ok(_employeeService.GetEmployeeByAnySpec(employeeCode, fullName, positionId, departmentId));
+            return Ok(_employeeService.GetEmployeeByAnySpec(spec, spec, positionId, departmentId));
+        }
+        /// <summary>
+        /// API trả về mã nhân viên lớn nhất +1 trong csdl
+        /// </summary>
+        /// <returns>string</returns>
+        /// createdBy: giangdm (24/01/2021)
+        [HttpGet("employeecodemax")]
+        public IActionResult GetEmployeeCodeMax()
+        {
+            return Ok(_employeeService.GetEmployeeCodeMax());
         }
     }
 

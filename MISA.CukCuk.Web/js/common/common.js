@@ -15,10 +15,11 @@
 
 function formatMoney(money) {
     if (money == null)
-        return " ";
-    var num = money.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '1,');
+        return "";
+    var num = money.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
     return num;
 }
+
 function formatGender(gender) {
     if (gender == 1)
         return "Nam";
@@ -31,10 +32,10 @@ function formatWorkStatus(status) {
     else if (status == 0)
         return "Đã nghỉ việc";
 }
-function resetInputDialog() { 
+function resetInputDialog() {
     $('input[type="text"], input[type="date"], input[type="email"]').val(null);
     $('input').removeClass('border-red');
-   // $('select[fieldName]').empty();
+    // $('select[fieldName]').empty();
 }
 
 function regenDate(dateInput) {
@@ -50,4 +51,12 @@ function regenDate(dateInput) {
         return date;
     }
     return "";
+}
+function onChange(input) {
+    var value = $(input).val();
+    value = value.split('.').join("");
+    value = formatMoney(parseFloat(value));
+    debugger
+    $(input).val(value);
+    debugger;
 }

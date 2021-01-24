@@ -14,6 +14,12 @@ namespace MISA.Infrastructure
         {
                 
         }
+        /// <summary>
+        /// Lấy ra thông tin khách hàng theo mã
+        /// </summary>
+        /// <param name="code">Mã khách hàng</param>
+        /// <returns>object</returns>
+        /// createdBy: giangdm (20/01/2021)
         public IEnumerable<Customer> GetCustomerByCode(string code)
         {
             return _dbConnection.Query<Customer>($"select * from Customer where CustomerCode = '{code}'");

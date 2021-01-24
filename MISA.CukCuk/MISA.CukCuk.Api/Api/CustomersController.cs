@@ -20,31 +20,17 @@ namespace MISA.CukCuk.Api.Api
         {
             _customerService = customerService;
         }
-
+        /// <summary>
+        /// API trả về danh sách khách hàng theo mã
+        /// </summary>
+        /// <param name="code"></param>
+        /// <returns>Json</returns>
+        /// createdBy: giangdm (20/01/2021)
         [HttpGet("code")]
         public IActionResult GetCustomerByCode(string code)
         {
             return Ok(_customerService.GetCustomerByCode(code));
         }
         
-        //[HttpPost]
-        //public override IActionResult Insert(Customer customer)
-        //{
-        //    var customerCheck = _dbConnection.Query<Customer>($"select CustomerCode from Customer where CustomerCode='{customer.CustomerCode}'");
-        //    if (customerCheck.Count() > 0)
-        //    {
-        //        return BadRequest("Trùng mã khách hàng");
-        //    }
-        //    return base.Insert(customer);
-        //}
-
-        //[HttpPut]
-        //public IActionResult updateCustomer([FromBody] Customer customer)
-        //{
-        //    string customerId = customer.CustomerId.ToString();
-        //    string customerGroupId = customer.CustomerGroupId.ToString();
-        //    var res = _dbConnection.Execute($"Proc_UpdateCustomer", param: common.GetParam(customer), commandType: CommandType.StoredProcedure);
-        //    return Ok(res);
-        //}
     }
 }

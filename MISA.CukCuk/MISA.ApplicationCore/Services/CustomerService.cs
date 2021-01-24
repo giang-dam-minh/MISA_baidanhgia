@@ -13,6 +13,12 @@ namespace MISA.ApplicationCore.Services
         {
             _customerRepository = customerRepository;
         }
+        /// <summary>
+        /// Lây ra thông tin khách hàng theo mã
+        /// </summary>
+        /// <param name="code">Mã khách hàng</param>
+        /// <returns>Object</returns>
+        /// createdBy: giangdm (20/01/2021)
         public IEnumerable<Customer> GetCustomerByCode(string code)
         {
            return _customerRepository.GetCustomerByCode(code);

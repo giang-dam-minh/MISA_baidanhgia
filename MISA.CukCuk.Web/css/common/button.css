@@ -1,4 +1,8 @@
-﻿.btn-default {
+﻿button:hover {
+    cursor: pointer;
+    
+}
+.btn-default {
     display: flex;
     align-items: center;
     background-color: #019160;
@@ -15,7 +19,7 @@
 }
 
     .btn-default:hover {
-        background-color: #2F8E8E;
+        background-color: #2FBE8E;
     }
 
     .btn-default .btn-text {
@@ -38,7 +42,7 @@
     cursor: pointer;
 }
 
-.m-filter-refres:hover {
+.m-filter-refresh:hover {
     background-color: #e5e5e5;
 }
 
