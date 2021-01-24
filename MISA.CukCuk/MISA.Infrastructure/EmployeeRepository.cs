@@ -17,7 +17,7 @@ namespace MISA.Infrastructure
 
         }
         /// <summary>
-        /// Lấy ra danh sách nhân viên theo mã, tên, vị trí, phòng bàn
+        /// Lấy ra danh sách nhân viên theo mã, tên, vị trí, phòng bàn (dùng cho filter)
         /// </summary>
         /// <param name="employeeCode">mã nhân viên</param>
         /// <param name="fullName">họ tên</param>

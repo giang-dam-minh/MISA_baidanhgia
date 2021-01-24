@@ -1,4 +1,9 @@
-﻿function formatDate(date) {
+﻿/**
+ * Định dạng lại ngày tháng
+ * ví dụ: 2020/12/01 => 01/12/2020
+ * @param {any} date
+ */
+function formatDate(date) {
     var date = new Date(date);
     if (Number.isNaN(date.getTime())) {
         return " ";
@@ -12,32 +17,53 @@
         return day + '/' + month + '/' + year;
     }
 }
-
+/**
+ * Định dạng lại kiểu money
+ * ví dụ: 2000000 => 2.000.000
+ * @param {any} money
+ */
 function formatMoney(money) {
     if (money == null)
         return "";
     var num = money.toFixed(0).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1.");
     return num;
 }
-
+/**
+ * Định dạng kiểu giới tính
+ * 1 => nam
+ * 0 => nữ
+ * @param {any} gender
+ */
 function formatGender(gender) {
     if (gender == 1)
         return "Nam";
     else
         return "Nữ";
 }
+/**
+ * Định dạng kiểu trang thái công việc
+ * 1 => Đang làm việc
+ * 0 => Đã nghỉ việc
+ * @param {any} status
+ */
 function formatWorkStatus(status) {
     if (status == 1)
         return "Đang làm việc";
     else if (status == 0)
         return "Đã nghỉ việc";
 }
+/**
+ * Làm mới các ô nhập liệu
+ * */
 function resetInputDialog() {
     $('input[type="text"], input[type="date"], input[type="email"]').val(null);
     $('input').removeClass('border-red');
     // $('select[fieldName]').empty();
 }
-
+/**
+ * định dạng lại kiểu date để đẩy ra combobox
+ * @param {any} dateInput
+ */
 function regenDate(dateInput) {
     if (dateInput) {
         let year = parseInt(dateInput.substr(0, 4));
@@ -52,6 +78,10 @@ function regenDate(dateInput) {
     }
     return "";
 }
+/**
+ * format kiểu money khi nhập
+ * @param {any} input
+ */
 function onChange(input) {
     var value = $(input).val();
     value = value.split('.').join("");

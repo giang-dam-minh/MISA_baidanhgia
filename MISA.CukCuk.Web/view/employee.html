@@ -86,7 +86,7 @@
         <div class="filter-bar">
             <div class="filter-left">
                 <input class="icon-search input-search" fieldFilter="spec" id="txtFilter" style="width:200px" type="text" placeholder="Tìm kiếm theo mã, Tên nhân viên, Số điện thoại" />
-                <select api="http://localhost:56094/api/Position" fieldFilter="position" fieldName="PositionId" displayName="PositionName" class="option" id="cbxPosition">
+                <select api="http://localhost:56094/api/v1/Positions" fieldFilter="position" fieldName="PositionId" displayName="PositionName" class="option" id="cbxPosition">
                     <option value="">--Tất cả vị trí--</option>
                 </select>
                 <select api="http://localhost:56094/api/v1/Departments" fieldFilter="department" fieldName="DepartmentId" displayName="DepartmentName" class="option" id="cbxDepartment">
@@ -215,7 +215,7 @@
                             <div class="a-row">
                                 <div class="m-label">Vị trí</div>
                                 <div class="m-control">
-                                    <select api="http://localhost:56094/api/Position" fieldName="PositionId" displayName="PositionName" class="option">
+                                    <select api="http://localhost:56094/api/v1/Positions" fieldName="PositionId" displayName="PositionName" class="option">
                                     </select>
                                 </div>
                             </div>

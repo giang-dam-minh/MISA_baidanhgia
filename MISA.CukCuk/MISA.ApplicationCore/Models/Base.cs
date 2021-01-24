@@ -4,6 +4,9 @@ using System.Text;
 
 namespace MISA.ApplicationCore.Models
 {
+    /// <summary>
+    /// Tên thuộc hiển thị
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class DisplayName:Attribute
     {
@@ -13,11 +16,17 @@ namespace MISA.ApplicationCore.Models
             PropertyName = propertyName;
         }
     }
+    /// <summary>
+    /// Bắt buộc nhập(không được để trống)
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class Required : Attribute
     {
         
     }
+    /// <summary>
+    /// Kiểm tra trùng
+    /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public class CheckDuplicate : Attribute
     {

@@ -11,9 +11,9 @@ using MISA.ApplicationCore.Models;
 
 namespace MISA.CukCuk.Api.Api
 {
-    public class CustomerGroupController : EntityController<CustomerGroup>
+    public class CustomersGroupController : EntityController<CustomerGroup>
     {
-        public CustomerGroupController(IBaseServices<CustomerGroup> baseServices)
+        public CustomersGroupController(IBaseServices<CustomerGroup> baseServices)
             :base(baseServices)
         {
 

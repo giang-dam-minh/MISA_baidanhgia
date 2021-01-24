@@ -9,12 +9,10 @@ using System.Threading.Tasks;
 
 namespace MISA.CukCuk.Api.Api
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class PositionController : EntityController<Position>
+    public class PositionsController : EntityController<Position>
     {
         IBaseServices<Position> _baseServices;
-        public PositionController(IBaseServices<Position> baseServices) : base(baseServices)
+        public PositionsController(IBaseServices<Position> baseServices) : base(baseServices)
         {
             _baseServices = baseServices;
         }
