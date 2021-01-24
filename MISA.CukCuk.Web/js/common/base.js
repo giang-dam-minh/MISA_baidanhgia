@@ -66,6 +66,7 @@ class BaseJS {
         //Sự kiện khi bấm nút lưu
         $('#btnSave').click(function () {
             me.SaveOnClick();
+            resetInputDialog();
         })
 
         // Hiển thị thông tin chi tiết khi nhấn đúp chuột chọn 1 dòng
@@ -198,6 +199,7 @@ class BaseJS {
         //Duyệt tất cả các obj trả về để đổ ra table
         $.each(res, function (index, obj) {
             var tr = $(`<tr></tr>`);
+            debugger;
             $(tr).data('recordId', obj[me.keyId]);
             //duyệt tất cả các cột để map dữ liệu
             $.each(columns, function (index, th) {
@@ -324,11 +326,12 @@ class BaseJS {
                 value = value.split('.').join("");
             entity[propertyName] = value;
         })
+        debugger;
         //Nếu đang ở trạng thái sửa thì lấy thông tin id cần sửa
         if (me.method == "PUT") {
             entity[me.keyId] = $(me.rowSelected).data('recordId');
         }
-        //Tiến hành 
+        //Thực thi
         $.ajax({
             url: me.api,
             method: me.method,

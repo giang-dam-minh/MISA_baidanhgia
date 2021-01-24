@@ -1,4 +1,5 @@
-﻿.noti {
+﻿/*css cho thông báo xác nhận xóa*/
+.noti {
     display:none;
 }
 
@@ -96,7 +97,7 @@
         margin-top: 10px;
         background-color: #01B075;
         width: 100px;
-        margin-left: calc(20% - 24px);
+        margin-left: calc(24% - 24px);
     }
 
         .noti-footer button:hover {
@@ -105,7 +106,7 @@
 .noti-bg .noti-footer .text {
 }
 
-
+/*css cho thông báo sai thông tin*/
 .noti-mess {
     display: none;
 }
@@ -190,7 +191,7 @@
     margin-right: auto;
     height: 60px;
     background-color: #e5e5e5;
-    margin-top: 103px;
+    margin-top: 146px;
     width: 112%;
     background-position: center;
     border-bottom-right-radius: 5px;
@@ -208,7 +209,7 @@
         margin-top: 10px;
         background-color: #01B075;
         width: 100px;
-        margin-left: calc(20% - 24px);
+        margin-left: calc(83% - 48px);
     }
 
 .noti-footer-mess button:hover {
