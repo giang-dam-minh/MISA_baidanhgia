@@ -2,6 +2,7 @@
     width: calc(100% - 16px);
     margin-left:16px;
     height: 710px;
+    margin-top:16px;
 }
 
 table th, td {

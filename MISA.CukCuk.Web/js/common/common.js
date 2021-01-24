@@ -1,24 +1,4 @@
-﻿/**
- * format dữ liệu theo kiểu ngày tháng sang ngay/thang/nam
- * @param {any} date ({date} date) tham số có kiểu dữ liệu bất kỳ 
- * CreatedBy: abc (26/12/2020)
- */
-//function formatdate(date) {
-//    var date = new date(date);
-//    if (number.isnan(date.gettime())) {
-//        return "";
-//    }
-//    else {
-//        var day = date.getdate(),
-//            month = date.getmonth() + 1,
-//            year = date.getfullyear();
-//        day = day < 10 ? "0" + day : day; //trc dấu "?" là if sau dấu ":" là else. nếu day <10 thì 0 + day và ..
-//        month = month < 10 ? "0" + month : month;
-//        return day + '/' + month + '/' + year;
-//    }
-//}
-
-function formatDate(date) {
+﻿function formatDate(date) {
     var date = new Date(date);
     if (Number.isNaN(date.getTime())) {
         return " ";
@@ -27,20 +7,47 @@ function formatDate(date) {
         var day = date.getDate(),
             month = date.getMonth() + 1,
             year = date.getFullYear();
-        day = day < 10 ? "0" + day : day; //trc dấu "?" là if sau dấu ":" là else. nếu day <10 thì 0 + day và ..
+        day = day < 10 ? "0" + day : day;
         month = month < 10 ? "0" + month : month;
         return day + '/' + month + '/' + year;
     }
 }
 
-/**
- * Hàm định dạng hiển thị tiền tệ
- * @param {any} money số tiền
- * CreatedBy: abc (26/12/2020)
- */
 function formatMoney(money) {
     if (money == null)
         return " ";
     var num = money.toFixed(1).replace(/(\d)(?=(\d{3})+\.)/g, '1,');
     return num;
+}
+function formatGender(gender) {
+    if (gender == 1)
+        return "Nam";
+    else
+        return "Nữ";
+}
+function formatWorkStatus(status) {
+    if (status == 1)
+        return "Đang làm việc";
+    else if (status == 0)
+        return "Đã nghỉ việc";
+}
+function resetInputDialog() { 
+    $('input[type="text"], input[type="date"], input[type="email"]').val(null);
+    $('input').removeClass('border-red');
+   // $('select[fieldName]').empty();
+}
+
+function regenDate(dateInput) {
+    if (dateInput) {
+        let year = parseInt(dateInput.substr(0, 4));
+        let mon = parseInt(dateInput.substr(5, 2));
+        let day = parseInt(dateInput.substr(8, 2));
+
+        day = day >= 10 ? day : '0' + day;
+        mon = mon >= 10 ? mon : '0' + mon;
+
+        var date = `${year}-${mon}-${day}`;
+        return date;
+    }
+    return "";
 }

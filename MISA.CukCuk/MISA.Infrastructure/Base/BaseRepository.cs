@@ -62,7 +62,7 @@ namespace MISA.Infrastructure.Base
 
         public IEnumerable<MISAEntity> Get()
         {
-            return _dbConnection.Query<MISAEntity>($"select * from {_tableName}");
+            return _dbConnection.Query<MISAEntity>($"Proc_Get{_tableName}s",commandType:CommandType.StoredProcedure);
         }
         public IEnumerable<MISAEntity> GetById(string id)
         {

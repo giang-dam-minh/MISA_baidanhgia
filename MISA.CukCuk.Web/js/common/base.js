@@ -1,11 +1,13 @@
-﻿class BaseJS {
+﻿
+class BaseJS {
     constructor() {
         this.api = null;
         this.setDataUrl();
         this.initEvents();
+        this.loadDataforCombobox();
         this.loadData();
     }
-    setDataUrl(){
+    setDataUrl() {
 
     }
     initEvents() {
@@ -15,60 +17,50 @@
             //Hiển thị dialog thông tin chi tiết:
             $('.dialog-detail').show();
             $('#txtCustomerCode').focus();
-            var selects = $('select[fieldName]');
-            console.log(selects);
-            $.each(selects, function (index, select) {
-                var api = $(select).attr('api');
-                console.log(api);
-                var fieldName = $(select).attr('fieldName');
-                var fieldValue = $(select).attr('fieldValue');
-                console.log(fieldName);
-                console.log(fieldValue);
-                $.ajax({
-                    url: api,
-                    method: "GET"
-                }).done(function (res) {
-                    if (res) {
-                        $.each(res, function (index, obj) {
-                            var option = $(`<option>dqdqw</option>`);
-                            select.append(option);
-                        })
-                    }
-                }).fail(function (res) {
+            me.method = "POST";
+           // me.loadDataforCombobox();
+        })
 
-                })
-
-            })
-          
+        $('table tbody').on('click', 'tr', function () {
+            //$('table tbody tr').find('td').removeClass('selected-row');
+            $('table tbody tr').removeClass('row-selected');
+            //$(this).find('td').addClass('selected-row');
+            $(this).addClass('row-selected');
+            me.rowSelected = this;
         })
 
         //Load lại dữ liệu khi ấn button Load
-        $('#btnRefresh').click(function () {
-            //Hiểnthị customer thông tin chi tiết sau khi Load data:
-            $('#table').remove('tr');
-            me.loadData();
-
+        //$('#btnRefresh').click(function () {
+        //    //Hiểnthị customer thông tin chi tiết sau khi Load data:
+        //    $('#table').remove('tr');
+        //    me.loadData();
+        //})
+        $('#btnDelete').click(function () {
+            var recordId = $(me.rowSelected).data('recordId');
+            debugger
+            $.ajax({
+                url: me.api + "/id?id=" + `${recordId}`,
+                method: "DELETE",               
+            }).done(function (res) {
+                debugger
+                alert("Xóa thành công");
+            }).fail(function (res) {
+                debugger;
+                alert("fail");
+            })
         })
-
         //Ẩn form chi tiết khi ấn X:
         $('#btnX').click(function () {
-            //Hiển thị customer thông tin chi tiết:
             $('.dialog-detail').hide();
-            
-
+            $('table tbody tr').removeClass('row-selected');
+            resetInputDialog();
         })
 
-        //Ẩn form chi tiết khi ấn hủy:
         $('#btnCancel').click(function () {
-            //Hiển thị customer thông tin chi tiết:
             $('.dialog-detail').hide();
-
         })
 
-        //Thực hiện lưu dữ liệu khi ấn button LƯU trên form chi tiết
         $('#btnSave').click(function () {
-
-            //Validate dữ liệu:
             var inputvaidates = $('input[required], input[type="email"]');
             $.each(inputvaidates, function (index, input) {
                 $(input).trigger('blur');
@@ -79,6 +71,7 @@
                 inputNotValids[0].focus;
                 return;
             }
+
             var inputs = $('input[fieldName],select[fieldName]');
             var entity = {};
             $.each(inputs, function (index, input) {
@@ -86,39 +79,60 @@
                 var value = $(this).val();
                 entity[propertyName] = value;
             })
+            if (me.method == "PUT") {
+                entity.EmployeeId = $(me.rowSelected).data('recordId');
+            }
+            console.log(me.method);
+            debugger
             $.ajax({
-                url: me.getDataUrl,
-                method: 'POST',
+                url: me.api,
+                method: me.method,
                 data: JSON.stringify(entity),
                 contentType: 'application/json'
             }).done(function (res) {
-                alert('Thêm thành công');
                 $('.dialog-detail').hide();
                 me.loadData();
-
+                console.log("done");
+                debugger
             }).fail(function (res) {
-                alert("fail")
-                
+                console.log("fail");
+                debugger
             })
-            //Sau khi lưu thành công:
-            //  + đưa ra thông báo tshành công
-            //  + ẩn form chi tiết
-            //  + load lại dữ liệu
-
-            //Hiển thị dialog thông tin chi tiết:
-            
-
+         
         })
 
         // Hiển thị thông tin chi tiết khi nhấn đúp chuột chọn 1 dòng
         $('table tbody').on('dblclick', 'tr', function () {
+            me.rowSelected = this;
             $(this).addClass('row-selected');
             $('.dialog-detail').show();
+            me.method = "PUT";
+            var recordId = $(this).data('recordId');
+            $.ajax({
+                url: me.api + "/id?id=" + `${recordId}`,
+                method: "GET"
+            }).done(function (res) {
+                var inputs = $('input[fieldName],select[fieldName]');
+                $.each(inputs, function (index, input) {
+                    
+                    var propertyName = $(this).attr('fieldName');
+                    var value = res[0][propertyName];
+                    if ($(this).attr('type') == "date") {
+                        value=regenDate(value);
+                    }
+                    
+                    $(this).val(value);
+                })
+                debugger
+            }).fail(function (res) {
+
+            })
+
         })
-        
+
 
         $('input[required]').blur(function () {
-            //Kiểm tra dữ liệu đã nhập, nếu để trống thì cảnh báo
+           
             var value = $(this).val();
             if (!value) {
                 $(this).addClass('border-red');
@@ -128,13 +142,9 @@
                 $(this).removeClass('border-red');
                 $(this).attr('validate', true);
             }
-            
         })
 
-        /**
-         * validate Email đúng định dạng:
-         * CreatedBy: abc (04/01/2021)
-         */
+        
         $('input[type="email"]').blur(function () {
             var value = $(this).val();
             var testEmail = /^[A-Z0-9._%+-]+@([A-Z0-9-]+\.)+[A-Z]{2,4}$/i;
@@ -151,23 +161,18 @@
 
 
     }
-    /**
-     * Load dữ liệu
-     * CreatedBy: abc (29/12/2020)
-     * */
     loadData() {
-        // lấy thông tin các cột data:
+        $('table tbody').empty();
         try {
             var columns = $('table thead th');
             var api = this.api;
             $.ajax({
                 url: api,
                 method: "GET",
-
             }).done(function (res) {
                 $.each(res, function (index, obj) {
                     var tr = $(`<tr></tr>`);
-                    //lấy thông tin dữ liệu sẽ map tương ứng vs các cột
+                    $(tr).data('recordId', obj["EmployeeId"]);
                     $.each(columns, function (index, th) {
                         var td = $(`<td><div><span></span></div></td>`);
                         var fieldName = $(th).attr('fieldname');
@@ -175,19 +180,22 @@
                         var formatType = $(th).attr('formatType');
                         switch (formatType) {
                             case "ddmmyyyy":
-                                td.addClass("text-align-center");
                                 value = formatDate(value);
                                 break;
                             case "Money":
-                                td.addClass("text-align-right");
                                 value = formatMoney(value);
+                                break;
+                            case "Gender":
+                                value = formatGender(value);
+                                break;
+                            case "WorkStatus":
+                                value = formatWorkStatus(value);
                                 break;
                             default:
                         }
                         td.append(value);
                         $(tr).append(td);
                     })
-                    //debugger;
                     $('table tbody').append(tr);
 
                 })
@@ -195,10 +203,33 @@
 
             })
         } catch (e) {
-            //ghi log lỗi:
-            console.log(e);
         }
 
+    }
+
+    loadDataforCombobox() {
+        var selects = $('select[api]');
+        //selects.empty();
+        $.each(selects, function (index, select) {
+            var api = $(select).attr('api');
+            var displayName = $(select).attr('displayName');
+            var fieldValue = $(select).attr('fieldName');
+            $.ajax({
+                url: api,
+                method: "GET"
+            }).done(function (res) {
+                if (res) {
+                    $.each(res, function (index, obj) {
+                        var o = new Option();
+                        o.value = obj[fieldValue];
+                        o.text = obj[displayName];
+                        select.append(o);
+                    })
+                }
+            }).fail(function (res) {
+
+            })
+        })
     }
 }
 

@@ -38,9 +38,9 @@
     cursor: pointer;
 }
 
-    .m-second-button:hover {
-        background-color: #e9ebee;
-    }
+.m-filter-refres:hover {
+    background-color: #e5e5e5;
+}
 
 .m-filter-refresh {
     background-image: url('/content/icon/refresh.png');
@@ -48,4 +48,12 @@
     height: 40px;
     background-position: center;
     /*right: 16px;*/
+}
+.m-delete {
+    background-image: url('../../content/icon/thungrac.jpg');
+    background-repeat: no-repeat;
+    background-size:contain;
+    background-color:red;
+    height: 40px;
+    background-position: center;
 }

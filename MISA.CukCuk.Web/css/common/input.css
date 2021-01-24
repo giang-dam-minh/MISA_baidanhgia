@@ -5,9 +5,7 @@
     border: 1px solid #bbbbbb;
     
 }
-    input::placeholder {
-        font-size: 11.5px;
-    }
+   
 .input-search{
     padding-left: 40px;
 }
