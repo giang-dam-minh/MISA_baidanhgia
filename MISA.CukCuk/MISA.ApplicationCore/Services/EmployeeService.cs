@@ -24,6 +24,10 @@ namespace MISA.ApplicationCore.Services
         /// createdBy: giangdm (20/01/2021)
         public IEnumerable<Employee> GetEmployeeByAnySpec(string employeeCode, string fullName, string positionId, string departmentId)
         {
+            if (employeeCode == null)
+                employeeCode = "";
+            if (fullName == null)
+                fullName = "";
            return _employeeRepository.GetEmployeeByAnySpec(employeeCode, fullName, positionId, departmentId);
         }
         /// <summary>

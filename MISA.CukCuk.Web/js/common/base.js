@@ -66,7 +66,6 @@ class BaseJS {
         //Sự kiện khi bấm nút lưu
         $('#btnSave').click(function () {
             me.SaveOnClick();
-            resetInputDialog();
         })
 
         // Hiển thị thông tin chi tiết khi nhấn đúp chuột chọn 1 dòng
@@ -124,14 +123,14 @@ class BaseJS {
         //Sự kiện khi nhấn tiếp tục trên thông báo lỗi dữ liệu(trùng mã, ...)
         $('#btnNextMess').click(function () {
             //Xóa các dòng thông báo trên form
-            $('noti-content-mess').html("");
+            $('.noti-content-mess').empty();
             $('.noti-mess').hide();
 
         })
         //Đóng thông báo lỗi dữ liệu
         $('#btnXMessageMess').click(function () {
             //Xóa các dòng thông báo trên form
-            $('noti-content-mess').html("");
+            $('.noti-content-mess').empty();
             $('.noti-mess').hide();
         })
         //Sự kiện blur khỏi các trường bắt buộc nhập
@@ -288,11 +287,13 @@ class BaseJS {
             api = api + `${fieldFilterName}=` + `${value}&`;
 
         })
+        debugger;
         //Sử dụng api vừa built được để lấy dữ liệu
         $.ajax({
             url: api,
             method: "GET"
         }).done(function (res) {
+            debugger;
             //load dữ liệu vào table
             me.BindDataToTable(res);
         })
@@ -341,6 +342,8 @@ class BaseJS {
             if (res.success) {
                 $('.dialog-detail').hide();
                 me.LoadData();
+                resetInputDialog();
+
             }
             else {
                 //Trường hợp ko thực thi được thì thu thập lỗi, hiển thị cho người dùng biết

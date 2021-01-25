@@ -10,6 +10,10 @@
     table{
         width:99%;
     }
+        table tr:hover {
+            cursor: pointer;
+            background-color: #E5E5E5;
+        }
     /*page-title*/
     .content .header-content {
         display:flex;

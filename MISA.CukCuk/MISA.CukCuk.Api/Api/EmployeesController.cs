@@ -25,9 +25,9 @@ namespace MISA.CukCuk.Api.Api
         /// <returns>object</returns>
         /// createdBy: giangdm (24/01/2021)
         [HttpGet("spec/position/department")]
-        public IActionResult GetEmployeeByAnySpec(string spec = null, string positionId = null, string departmentId = null)
+        public IActionResult GetEmployeeByAnySpec(string spec = null, string position = null, string department = null)
         {
-            return Ok(_employeeService.GetEmployeeByAnySpec(spec, spec, positionId, departmentId));
+            return Ok(_employeeService.GetEmployeeByAnySpec(spec, spec, position, department));
         }
         /// <summary>
         /// API trả về mã nhân viên lớn nhất +1 trong csdl
