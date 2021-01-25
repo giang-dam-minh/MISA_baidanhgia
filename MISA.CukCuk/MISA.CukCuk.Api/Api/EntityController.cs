@@ -20,16 +20,21 @@ namespace MISA.CukCuk.Api.Api
     [ApiController]
     public class EntityController<MISAEntity> : ControllerBase
     {
+        #region declare
         IBaseServices<MISAEntity> _baseServices;
+        #endregion
+        #region constructor
         public EntityController(IBaseServices<MISAEntity> baseServices)
         {
             _baseServices = baseServices;
         }
+        #endregion
         /// <summary>
         /// API trả về tất cả thông tin 
         /// </summary>
         /// <returns>object</returns>
         /// createdBy: giangdm (20/01/2021)
+        #region method
         [HttpGet]
         public IActionResult Get()
         {
@@ -79,5 +84,6 @@ namespace MISA.CukCuk.Api.Api
         {
             return Ok(_baseServices.Delete(id));
         }
+        #endregion
     }
 }

@@ -187,6 +187,7 @@ class BaseJS {
      * Đổ dữ liệu ra table
      * 
      * @param {any} res: dữ liệu từ server trả về
+     * createdBy: giangdm (20/1/2021)
      */
     BindDataToTable(res) {
         var me = this;

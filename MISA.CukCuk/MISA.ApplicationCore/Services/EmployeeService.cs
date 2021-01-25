@@ -40,7 +40,7 @@ namespace MISA.ApplicationCore.Services
             var employeeCodeMax = _employeeRepository.GetEmployeeCodeMax();
             var codeLength = employeeCodeMax.Length - 2;
             var sub =int.Parse( employeeCodeMax.Substring(2, codeLength)) +1;
-            var newCode = employeeCodeMax.Substring(0, 4) + sub;
+            var newCode = employeeCodeMax.Substring(0, 2) + sub;
             return newCode;
         }
     }
