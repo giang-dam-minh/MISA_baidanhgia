@@ -1,0 +1,64 @@
+button{
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    background-color: white;
+    &:hover{
+        cursor: pointer;
+        background-color: #e5e5e5;
+    }
+}
+input{
+    border: 1px solid #cecdcd;
+    border-radius: 5px;
+    background-color: white;
+    outline: none;
+   
+}
+textarea{
+    border: 1px solid #cecdcd;
+    border-radius: 5px;
+    background-color: white;
+    outline: none;
+}
+.clear{
+    clear: both;
+}
+.f-s-30{
+ font-size: 30px;
+}
+.f-s-20{
+    font-size: 20px;
+}
+.f-w-10{
+    font-size: 10px;
+}
+.f-w-b{
+    font-weight: bold;
+}
+.m-l-20{
+    margin-left: 20px;
+}
+
+.m-t-10{
+    margin-top: 10px;
+}
+.m-b-10{
+    margin-bottom: 10px;
+}
+.m-auto{
+    margin: auto;
+}
+.cl-b{
+    color: #F27922;
+}
+.line-through{
+    text-decoration-line:line-through;
+}
+.addCart{
+    button{
+        margin-top: 5px;
+        padding: 5px 10px;
+    background-color: #F27922;
+    color: white;
+    }
+}

@@ -15,7 +15,7 @@ using MISA.ApplicationCore.Services;
 
 namespace MISA.CukCuk.Api.Api
 {
-    [Route("api/v1/[controller]")]
+    [Route("api/[controller]")]
 
     [ApiController]
     public class EntityController<MISAEntity> : ControllerBase
@@ -35,7 +35,7 @@ namespace MISA.CukCuk.Api.Api
         /// <returns>object</returns>
         /// createdBy: giangdm (20/01/2021)
         #region method
-        [HttpGet]
+        [HttpGet("list-products")]
         public IActionResult Get()
         {
             return Ok(_baseServices.GET());

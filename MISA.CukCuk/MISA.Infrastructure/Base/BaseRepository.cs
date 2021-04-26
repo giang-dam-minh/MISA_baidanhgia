@@ -88,7 +88,7 @@ namespace MISA.Infrastructure.Base
         /// createdBy: giangdm (20/01/2021)
         public IEnumerable<MISAEntity> Get()
         {
-            return _dbConnection.Query<MISAEntity>($"Proc_Get{_tableName}s",commandType:CommandType.StoredProcedure);
+            return _dbConnection.Query<MISAEntity>($"select * from {_tableName}",commandType:CommandType.Text);
         }
         /// <summary>
         /// Lấy thông tin theo id
