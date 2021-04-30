@@ -53,6 +53,7 @@ textarea{
 }
 .line-through{
     text-decoration-line:line-through;
+    color: #d1d1d1;
 }
 .addCart{
     button{
@@ -61,4 +62,12 @@ textarea{
     background-color: #F27922;
     color: white;
     }
+}
+.text-center{
+    text-align: center;
+}
+.avatar{
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
 }

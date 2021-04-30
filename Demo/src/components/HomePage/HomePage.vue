@@ -69,33 +69,12 @@
         <div class="header-hot-product cl-b">
              SẢN PHẨM BÁN CHẠY
         </div>
-       <div @click="productClick(1)" class="content-hot-product">
-           <div class="content-hot-product-detail">
-               <img height="210" width="192" src="https://imua.com.vn/images/Product/Album/Kem-Chong-Nang-Innisfree-Triple-Care-SPF-50-PA-Phu-hop-voi-moi-loai-da-4155.jpg">
-               <div>Kem trang điểm vitamin C - 100% từ thiên nhiên</div>
-               <div>215.000 - 250.000</div>
-               <div class="addCart"><Button @click="addCart(1)">Thêm giỏ hàng</Button> </div>
-
-           </div>
-           <div class="content-hot-product-detail">
-               <img height="210" width="192" src="https://imua.com.vn/images/Product/Album/Kem-Chong-Nang-Innisfree-Triple-Care-SPF-50-PA-Phu-hop-voi-moi-loai-da-4155.jpg">
-               <div>Kem trang điểm vitamin C - 100% từ thiên nhiên</div>
-               <div>215.000 - 250.000</div>
-           </div>
-           <div class="content-hot-product-detail">
-               <img height="210" width="192" src="https://imua.com.vn/images/Product/Album/Kem-Chong-Nang-Innisfree-Triple-Care-SPF-50-PA-Phu-hop-voi-moi-loai-da-4155.jpg">
-               <div>Kem trang điểm vitamin C - 100% từ thiên nhiên</div>
-               <div><span class="cl-b f-s-20"> 215.000</span> - <span class="line-through"> 250.000</span></div>
-           </div>
-           <div class="content-hot-product-detail">
-               <img height="210" width="192" src="https://imua.com.vn/images/Product/Album/Kem-Chong-Nang-Innisfree-Triple-Care-SPF-50-PA-Phu-hop-voi-moi-loai-da-4155.jpg">
-               <div>Kem trang điểm vitamin C - 100% từ thiên nhiên</div>
-               <div>215.000 - 250.000</div>
-           </div>
-           <div class="content-hot-product-detail">
-               <img height="210" width="192" src="https://imua.com.vn/images/Product/Album/Kem-Chong-Nang-Innisfree-Triple-Care-SPF-50-PA-Phu-hop-voi-moi-loai-da-4155.jpg">
-               <div>Kem trang điểm vitamin C - 100% từ thiên nhiên</div>
-               <div>215.000 - 250.000</div>
+       <div class="content-hot-product">
+           <div @click="productClick(product.id)" v-for="product in lstHotProduct" :key="product" class="content-hot-product-detail">
+               <img height="210" width="192" :src="'data:image/png;base64,' + product.image" >
+               <div class="text-center">{{product.name}}</div>
+               <div class="text-center"><span class="cl-b f-w-b"> {{product.price-(product.price*product.sale/100)}}</span> - <span class="line-through">{{product.price}}</span> </div>
+               <div class="addCart"><Button @click="addCart(product.id)">Thêm giỏ hàng</Button> </div>
            </div>
        </div>
     </div>
@@ -171,18 +150,35 @@
 </template>
 <script>
 import BasePage from "@/components/BasePage.vue";
+import ProductsAPI from "@/api/ProductsAPI.js";
+import axios from 'axios'
 export default {
   name: "HomePage",
   components: {
     BasePage
   },
+  data(){
+      return{
+          lstHotProduct:  [],
+      }
+  },
   created(){
+    ProductsAPI.getAll().then(res => {
+      this.lstHotProduct = res.data;
+    }).catch(err => {
+    })
+  },
+  convertBlod(){
+
   },
   methods:{
-    productClick(){
+    productClick(id){
       this.$router.push("/product-detail/1");
     },
     addCart(id){
+    },
+    convertBase64(img){
+      return img? atob(img) : "";
     }
   }
 

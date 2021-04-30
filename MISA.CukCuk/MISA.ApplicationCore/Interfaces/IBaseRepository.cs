@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MISA.ApplicationCore.Models;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using System.Text;
@@ -13,6 +14,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <returns></returns>
         /// createdBy: giangdm (20/01/2021)
         IEnumerable<MISAEntity> Get();
+        IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest);
         /// <summary>
         /// Interface Lấy thông tin theo id
         /// </summary>

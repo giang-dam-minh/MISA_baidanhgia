@@ -48,7 +48,6 @@ export default {
   name: "ProductDetail",
   components:{ BasePage },
   created(){
-      debugger
   }
 }
 </script>

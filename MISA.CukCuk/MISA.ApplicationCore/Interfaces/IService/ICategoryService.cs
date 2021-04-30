@@ -5,8 +5,7 @@ using System.Text;
 
 namespace MISA.ApplicationCore.Interfaces.IService
 {
-    public interface IProductService : IBaseServices<Product>
+    public interface ICategoryService : IBaseServices<Category>
     {
-        IEnumerable<Product> getHotProduct();
     }
 }

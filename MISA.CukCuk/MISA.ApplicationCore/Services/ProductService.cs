@@ -15,5 +15,10 @@ namespace MISA.ApplicationCore.Services
         {
             _productRepository = productRepository;
         }
+
+        public IEnumerable<Product> getHotProduct()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

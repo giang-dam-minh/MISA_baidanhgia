@@ -9,6 +9,7 @@ using Dapper;
 using MISA.ApplicationCore.NewFolder;
 using System.Linq;
 using System.Reflection;
+using MISA.ApplicationCore.Models;
 
 namespace MISA.Infrastructure.Base
 {
@@ -30,13 +31,14 @@ namespace MISA.Infrastructure.Base
         /// <param name="entity">object cần thêm</param>
         /// <returns>số bản ghi thêm được</returns>
         /// createdBy: giangdm (20/01/2021)
-        public int Add(MISAEntity entity)
+        public virtual int Add(MISAEntity entity)
         {
             var rowEffect = 0;
             _dbConnection.Open();
             using(var transection = _dbConnection.BeginTransaction())
             {
-                rowEffect = _dbConnection.Execute($"Proc_Insert{_tableName}", param: common.GetParam(entity), commandType: CommandType.StoredProcedure);
+                var param = common.GetParam(entity);
+                rowEffect = _dbConnection.Execute($"Proc_Insert{_tableName}", param: param, commandType: CommandType.StoredProcedure);
                 transection.Commit();
             }
            return rowEffect;
@@ -88,7 +90,7 @@ namespace MISA.Infrastructure.Base
         /// createdBy: giangdm (20/01/2021)
         public IEnumerable<MISAEntity> Get()
         {
-            return _dbConnection.Query<MISAEntity>($"select * from {_tableName}",commandType:CommandType.Text);
+            return _dbConnection.Query<MISAEntity>($"select * from {_tableName}s",commandType:CommandType.Text);
         }
         /// <summary>
         /// Lấy thông tin theo id
@@ -99,6 +101,18 @@ namespace MISA.Infrastructure.Base
         public IEnumerable<MISAEntity> GetById(string id)
         {
             return _dbConnection.Query<MISAEntity>($"select * from {_tableName} where {_tableName}Id= '{id}'");
+        }
+
+        public IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest)
+        {
+            var param = new DynamicParameters();
+            int index = pagingRequest.PageIndex;
+            int pageSize = pagingRequest.PageSize;
+            int indexSearch = pageSize * (index - 1);
+            param.Add("@pageIndex", indexSearch);
+            param.Add("@pageSize", pageSize);
+            param.Add("@searchValue", pagingRequest.SearchValue);
+            return _dbConnection.Query<MISAEntity>($"Proc_Paging{_tableName}", param: param, commandType:CommandType.StoredProcedure);
         }
         /// <summary>
         /// Cập nhật thông tin

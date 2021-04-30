@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MISA.ApplicationCore.Interfaces;
+using MISA.ApplicationCore.Interfaces.IService;
 using MISA.ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
@@ -10,10 +11,16 @@ namespace MISA.CukCuk.Api.Api
 {
     public class ProductController : EntityController<Product>
     {
-        IBaseServices<Product> _baseServices;
-        public ProductController(IBaseServices<Product> baseServices) : base(baseServices)
+        IProductService _productService;
+
+        public ProductController(IProductService productService) : base(productService)
         {
-            _baseServices = baseServices;
+            _productService = productService;
+        }
+        [HttpGet("/hot-product")]
+        public IActionResult GetHotProduct()
+        {
+            return Ok(1);
         }
     }
 }

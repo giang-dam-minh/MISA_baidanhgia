@@ -1,5 +1,6 @@
 ﻿using MISA.ApplicationCore.Interfaces;
 using MISA.ApplicationCore.Models;
+using MISA.ApplicationCore.NewFolder;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,9 +10,12 @@ namespace MISA.ApplicationCore.Services
     public class BaseService<MISAEntity> : IBaseServices<MISAEntity>
     {
         IBaseRepository<MISAEntity> _baseRepository;
+        Common common;
+
         public BaseService(IBaseRepository<MISAEntity> baseRepository)
         {
             _baseRepository = baseRepository;
+            common = new Common();
         }
         /// <summary>
         /// Service thêm 1 bản ghi vào csdl
@@ -62,6 +66,14 @@ namespace MISA.ApplicationCore.Services
         {
             return _baseRepository.GetById(id);
         }
+
+        public IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest)
+        {
+            return _baseRepository.Paging(pagingRequest);
+        }
+
+
+
         /// <summary>
         /// Cập nhật thông tin
         /// </summary>

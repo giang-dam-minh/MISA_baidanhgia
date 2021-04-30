@@ -5,6 +5,9 @@ export default class BaseAPI {
     constructor() {
         this.controler = null;
     }
+    insert(param){
+        return BaseAPIConfig.post(`${this.controler}`, param);
+    }
     /**
      * Phương thức lấy tất cả dữ liệu
      */
@@ -16,6 +19,8 @@ export default class BaseAPI {
      * @param {*} payload 
      */
     paging(payload) {
+        debugger
+
         return BaseAPIConfig.post(`${this.controler}/paging`, payload);
     }
     /**

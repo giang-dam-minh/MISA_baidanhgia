@@ -12,6 +12,7 @@ using MISA.ApplicationCore.Interfaces;
 using MISA.Infrastructure;
 using MISA.Infrastructure.Base;
 using MISA.ApplicationCore.Services;
+using MISA.ApplicationCore.Models;
 
 namespace MISA.CukCuk.Api.Api
 {
@@ -35,7 +36,7 @@ namespace MISA.CukCuk.Api.Api
         /// <returns>object</returns>
         /// createdBy: giangdm (20/01/2021)
         #region method
-        [HttpGet("list-products")]
+        [HttpGet]
         public IActionResult Get()
         {
             return Ok(_baseServices.GET());
@@ -50,6 +51,11 @@ namespace MISA.CukCuk.Api.Api
         public IActionResult GetById(string id)
         {
             return Ok(_baseServices.GetById(id));
+        }
+        [HttpPost("paging")]
+        public IActionResult Paging([FromBody] PagingRequest pagingRequest)
+        {
+            return Ok(_baseServices.Paging(pagingRequest));
         }
         /// <summary>
         /// API thêm vào csdl
@@ -84,6 +90,8 @@ namespace MISA.CukCuk.Api.Api
         {
             return Ok(_baseServices.Delete(id));
         }
+       
+        
         #endregion
     }
 }

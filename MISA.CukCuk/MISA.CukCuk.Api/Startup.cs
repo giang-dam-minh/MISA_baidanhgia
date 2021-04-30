@@ -16,6 +16,8 @@ using MISA.ApplicationCore.Services;
 using MISA.Infrastructure;
 using Newtonsoft.Json.Serialization;
 using Newtonsoft.Json;
+using MISA.ApplicationCore.Interfaces.IRepository;
+using MISA.ApplicationCore.Interfaces.IService;
 
 namespace MISA.CukCuk.Api
 {
@@ -46,6 +48,10 @@ namespace MISA.CukCuk.Api
             services.AddScoped(typeof(IEmployeeService), typeof(EmployeeService));
             services.AddScoped(typeof(ITestRepository), typeof(TestRepository));
             services.AddScoped(typeof(ITestService), typeof(TestService));
+            services.AddScoped(typeof(IProductRepository), typeof(ProductRepository));
+            services.AddScoped(typeof(IProductService), typeof(ProductService));
+            services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
+            services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MISA.CukCuk.Api", Version = "v1" });

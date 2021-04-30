@@ -20,6 +20,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <returns></returns>
         /// createdBy: giangdm (20/01/2021)
         IEnumerable<MISAEntity> GetById(string id);
+        IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest);
         /// <summary>
         /// Interface Thêm 1 bản ghi 
         /// </summary>
@@ -27,6 +28,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <returns>Số bản ghi thêm được</returns>
         /// createdBy: giangdm (20/01/2021)
         ServiceResult Add(MISAEntity entity);
+
         /// <summary>
         /// Interface Cập nhật thông tin 1 bản ghi
         /// </summary>

@@ -5,8 +5,8 @@ using System.Text;
 
 namespace MISA.ApplicationCore.Interfaces.IRepository
 {
-    public interface IProductRepository : IBaseRepository<Product>
+    public interface ICategoryRepository : IBaseRepository<Category>
     {
-        IEnumerable<Product> getHotProduct();
+
     }
 }

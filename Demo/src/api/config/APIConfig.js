@@ -1,6 +1,6 @@
 var APIConfig = {
-    development: 'https://jsonplaceholder.typicode.com',
-    production: 'local:8081'
+    development: 'http://localhost:56094/api',
+    production: 'local:8080'
 }
 
 export default APIConfig[process.env.NODE_ENV];
