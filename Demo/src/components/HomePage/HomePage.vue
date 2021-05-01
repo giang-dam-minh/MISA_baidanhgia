@@ -71,10 +71,10 @@
         </div>
        <div class="content-hot-product">
            <div @click="productClick(product.id)" v-for="product in lstHotProduct" :key="product" class="content-hot-product-detail">
-               <img height="210" width="192" :src="'data:image/png;base64,' + product.image" >
-               <div class="text-center">{{product.name}}</div>
-               <div class="text-center"><span class="cl-b f-w-b"> {{product.price-(product.price*product.sale/100)}}</span> - <span class="line-through">{{product.price}}</span> </div>
-               <div class="addCart"><Button @click="addCart(product.id)">Thêm giỏ hàng</Button> </div>
+               <img height="210" width="192" :src="'data:image/png;base64,' + product.Image" >
+               <div class="text-center">{{product.ProductName}}</div>
+               <div class="text-center"><span class="cl-b f-w-b"> {{product.Price-(product.Price*product.Sale/100)}}</span> - <span class="line-through">{{product.Price}}</span> </div>
+               <div class="addCart"><Button @click="addCart(product.ProductCode)">Thêm giỏ hàng</Button> </div>
            </div>
        </div>
     </div>
@@ -163,8 +163,9 @@ export default {
       }
   },
   created(){
+    var me = this;
     ProductsAPI.getAll().then(res => {
-      this.lstHotProduct = res.data;
+      me.lstHotProduct = res.data;
     }).catch(err => {
     })
   },

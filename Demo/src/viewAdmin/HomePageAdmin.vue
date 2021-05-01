@@ -4,8 +4,8 @@
       <div class="logo"><img src="https://imua.com.vn//images/logo.png" /></div>
       <div class="">Quan ly website</div>
       <ul>
-        <li>Danh muc san pham</li>
-        <li>San pham</li>
+        <li @click="changeMenu('category')">Danh muc san pham</li>
+        <li @click="changeMenu('product')">San pham</li>
         <li>Gio hang</li>
       </ul>
     </div>
@@ -18,19 +18,55 @@
     </div>
 
     <div class="content-admin">
-      <EditProduct v-if="false"></EditProduct>
-      <EditCategory></EditCategory>
+      <EditProduct
+        v-if="formMode == 'product'"
+        @addNew="addNewProduct"
+        @editProduct="addNewProduct"
+      ></EditProduct>
+      <EditCategory  v-if="formMode == 'category'"></EditCategory>
+      <AddProduct
+        v-if="formMode == 'addProduct'"
+        :Product="dataProduct" 
+        :formMode="formModeProduct" 
+      ></AddProduct>
     </div>
   </div>
 </template>
 <script>
-import EditProduct from "@/viewAdmin/EditProduct.vue"
+import EditProduct from "@/viewAdmin/Product/EditProduct.vue"
+import AddProduct from "@/viewAdmin/Product/AddProduct.vue"
 import EditCategory from "@/viewAdmin/Category/EditCategory.vue"
 export default {
   components:{
     EditProduct,
-    EditCategory
+    EditCategory,
+    AddProduct
+  },
+  data(){
+    return{
+        formMode: 'product',
+        dataProduct: [],
+        formModeProduct: 1
+    }
+  },
+  methods:{
+    changeMenu(data){
+      this.formMode = data;
+    },
+    addNewProduct(data){
+      this.dataProduct = data;
+      if(data){
+        this.formModeProduct=2;
+        this.data="";
+      }
+      else{
+        this.formModeProduct=1;
+      }
+      this.formMode = 'addProduct';
+    },
+
   }
+
 };
 </script>
 <style lang="scss" scoped>

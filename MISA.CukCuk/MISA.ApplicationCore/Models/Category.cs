@@ -6,7 +6,10 @@ namespace MISA.ApplicationCore.Models
 {
     public class Category
     {
-        public string CategoryID { get; set; }
+        public int CategoryID { get; set; }
+        [CheckDuplicate]
+        [DisplayName("Mã danh mục")]
+        public string CategoryCode { get; set; }
         public string CategoryName { get; set; }
         public string SubCategory { get; set; }
     }

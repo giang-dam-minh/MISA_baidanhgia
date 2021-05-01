@@ -56,11 +56,11 @@ namespace MISA.Infrastructure.Base
             var sql = "";
             var spec = property.Name;
             var value = property.GetValue(entity);
-            var keyValue = entity.GetType().GetProperty($"{_tableName}Id").GetValue(entity);
+            var keyValue = entity.GetType().GetProperty($"{_tableName}ID").GetValue(entity);
             if (actionType == "add")
-                sql = $"select * from {_tableName} where {spec} = '{value}'";
+                sql = $"select * from {_tableName}s where {spec} = '{value}'";
             else if(actionType=="update")
-                sql = $"select * from {_tableName} where {spec} = '{value}' and {_tableName}Id <> '{keyValue}'";
+                sql = $"select * from {_tableName}s where {spec} = '{value}' and {_tableName}Id <> '{keyValue}'";
             var entityCheck = _dbConnection.Query<MISAEntity>(sql).FirstOrDefault();
             return entityCheck == null ? true : false;
         }
@@ -70,9 +70,9 @@ namespace MISA.Infrastructure.Base
         /// <param name="id">id cần xóa</param>
         /// <returns>số bản ghi xóa được</returns>
         /// createdBy: giangdm (20/01/2021)
-        public int DeleteById(Guid id)
+        public int DeleteById(int id)
         {
-            return _dbConnection.Execute($"delete from {_tableName} where {_tableName}Id = '{id.ToString()}'");
+            return _dbConnection.Execute($"delete from {_tableName}s where {_tableName}Id = '{id.ToString()}'");
         }
         /// <summary>
         /// đóng kết nối khi ko sử dụng

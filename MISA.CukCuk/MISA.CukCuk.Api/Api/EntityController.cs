@@ -86,7 +86,7 @@ namespace MISA.CukCuk.Api.Api
         /// <returns>Kết quả thực thi</returns>
         /// createdBy: giangdm (20/01/2021)
         [HttpDelete]
-        public virtual IActionResult Delete(Guid id)
+        public virtual IActionResult Delete(int id)
         {
             return Ok(_baseServices.Delete(id));
         }

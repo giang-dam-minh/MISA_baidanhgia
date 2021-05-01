@@ -6,15 +6,15 @@ namespace MISA.ApplicationCore.Models
 {
     public class Product
     {
-		public long id { get; set; }
-		public string name { get; set; }
-		public byte[] image { get; set;}
-        public Double price { get; set; }
-        public int sale { get; set; }
-        public string image_content_type { get; set; }
-		public string title { get; set; }
-		public string description { get; set; }
-		public int hot { get; set; }
-		public int category_id { get; set; }
-}
+		public int ProductID { get; set; }
+		[CheckDuplicate]
+		[DisplayName("Mã sản phẩm")]
+		public string ProductCode { get; set; }
+		public string ProductName { get; set; }
+        public double Price { get; set; }
+        public double Sale { get; set; }
+		public byte[] Image { get;set;}
+		public string Description { get; set; }
+		public int CategoryID { get; set; }
+	}
 }

@@ -42,6 +42,6 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="id">id cần xóa</param>
         /// <returns>Số bản ghi xóa được</returns>
         /// createdBy: giangdm (20/01/2021)
-        ServiceResult Delete(Guid id);
+        ServiceResult Delete(int id);
     }
 }

@@ -42,7 +42,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <param name="id">id cần xóa</param>
         /// <returns>Số bản ghi xóa được</returns>
         /// createdBy: giangdm (20/01/2021)
-        int DeleteById(Guid id);
+        int DeleteById(int id);
         /// <summary>
         /// Interface Kiểm tra xem đã có bản ghi trong csdl chưa theo tiêu chí truyền vào
         /// </summary>

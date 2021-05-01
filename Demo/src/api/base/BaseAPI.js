@@ -1,4 +1,5 @@
 import BaseAPIConfig from '@/api/base/BaseAPIConfig.js';
+import axios from 'axios';
 
 export default class BaseAPI {
 
@@ -19,8 +20,6 @@ export default class BaseAPI {
      * @param {*} payload 
      */
     paging(payload) {
-        debugger
-
         return BaseAPIConfig.post(`${this.controler}/paging`, payload);
     }
     /**
@@ -28,14 +27,14 @@ export default class BaseAPI {
      * @param {*} id 
      * @param {*} body 
      */
-    update(id, body) {
-        return BaseAPIConfig.update(`${this.controler}/update/${id}`, body);
+    update1(data) {
+        return axios.put(`http://localhost:56094/api/${this.controler}`, data);
     }
     /**
      * Hàm xóa bản ghi
      * @param {*} id 
      */
     delete(id) {
-        return BaseAPIConfig.delete(`${this.controler}/delete/${id}`);
+        return BaseAPIConfig.delete(`${this.controler}?id=${id}`);
     }
 }

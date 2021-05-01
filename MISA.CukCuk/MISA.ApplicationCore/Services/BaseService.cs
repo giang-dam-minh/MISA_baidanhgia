@@ -39,7 +39,7 @@ namespace MISA.ApplicationCore.Services
         /// <param name="id">id cần xóa</param>
         /// <returns>Kết quả thực thi</returns>
         /// createdBy: giangdm (20/01/2021)
-        public ServiceResult Delete(Guid id)
+        public ServiceResult Delete(int id)
         {
             var res = new ServiceResult();
             res.success = true;

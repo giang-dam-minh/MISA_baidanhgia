@@ -1,28 +1,54 @@
 <template>
   <div>
     <div class="left">
-      <AddCatrgory @addClick="listenAddClick"></AddCatrgory>
+      <AddCatrgory
+        @addClick="listenAddClick"
+        :Category="Category"
+      ></AddCatrgory>
     </div>
     <div class="right">
       <table border="1px solid #e5e5e5">
         <tr>
-          <th><input type="checkbox" /></th>
-          <th>Mã danh mục</th>
-          <th>Tên danh mục</th>
-          <th>Danh mục con</th>
+          <th style="width: 10px"><input type="checkbox" /></th>
+          <th style="width: 50px">Mã danh mục</th>
+          <th style="width: 50px">Tên danh mục</th>
+          <th style="width: 50px">Danh mục con</th>
+          <th style="width: 50px"></th>
         </tr>
-        <tr v-for="(item, index) in dataSourceX" :key="index">
-          <td><input type="checkbox" /></td>
-          <td>{{ item.CategoryID }}</td>
-          <td>{{ item.CategoryName }}</td>
-          <td>{{ item.SubCategory }}</td>
+        <tr
+          @click="rowClick(item)"
+          v-for="(item, index) in dataSourceX"
+          :key="index"
+        >
+          <td style="width: 10px; text-align: center">
+            <input @click="selectItem(item.CategoryID)" type="checkbox" />
+          </td>
+          <td style="width: 50px">{{ item.CategoryCode }}</td>
+          <td style="width: 50px">{{ item.CategoryName }}</td>
+          <td style="width: 50px">{{ item.SubCategory }}</td>
+          <td style="width: 50px">
+            <button @click="deleteRow(item.CategoryID)">Xoa</button>
+          </td>
         </tr>
       </table>
       <div class="paging">
         <a href="#">&laquo;</a>
-        <a href="#">{{pagingRequest.pageIndex}}</a>
-        <a href="#">{{pagingRequest.pageIndex +1 }}</a>
-        <a href="#">{{pagingRequest.pageIndex +2}}</a>
+        <a
+          v-if="pagingRequest.pageIndex > 1"
+          @click="changePageIndex(pagingRequest.pageIndex - 1)"
+          >{{ pagingRequest.pageIndex - 1 }}</a
+        >
+        <a @click="changePageIndex(pagingRequest.pageIndex)">{{
+          pagingRequest.pageIndex
+        }}</a>
+        <a @click="changePageIndex(pagingRequest.pageIndex + 1)">{{
+          pagingRequest.pageIndex + 1
+        }}</a>
+        <a
+          v-if="pagingRequest.pageIndex == 1"
+          @click="changePageIndex(pagingRequest.pageIndex + 2)"
+          >{{ pagingRequest.pageIndex + 2 }}</a
+        >
         <a href="#">&raquo;</a>
       </div>
     </div>
@@ -37,21 +63,40 @@ export default {
   },
   data() {
     return {
+      api: CategoryAPI,
       addMode: true,
       lstHeader: null,
       isAdd: false,
       dataSourceX: null,
-      pagingRequest:{
-        "pageIndex": 1,
-        "pageSize": 10,
-        "searchValue": "string"
-      }
+      Category: {
+        CategoryID: "",
+        CategoryCode: "",
+        CategoryName: "",
+        SubCategory: "",
+      },
+      pagingRequest: {
+        pageIndex: 1,
+        pageSize: 10,
+        searchValue: "string",
+      },
+      lsSelect: "",
     };
   },
   created() {
     this.getData();
   },
   methods: {
+    deleteRow(id) {
+      this.api
+        .delete(id)
+        .then((res) => {
+          this.getData();
+        })
+        .catch((err) => {});
+    },
+    rowClick(data) {
+      this.Category = data;
+    },
     addNew() {
       this.addMode = true;
     },
@@ -65,11 +110,13 @@ export default {
         })
         .catch((err) => console.log(err));
     },
+    changePageIndex(index) {
+      this.pagingRequest.pageIndex = index;
+      this.getData();
+    },
   },
   watch: {
-    dataSourceX(val) {
-      debugger;
-    },
+    dataSourceX(val) {},
   },
 };
 </script>

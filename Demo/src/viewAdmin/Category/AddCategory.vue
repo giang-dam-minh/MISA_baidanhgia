@@ -1,14 +1,14 @@
 <template>
     <div class="content-add-category">
         <div class="title f-s-20 f-w-b cl-b">
-       Them moi danh muc san pham
+       Quản lý danh mục sản phẩm
         </div>
-       <div class="category-code">Ma danh muc: <input v-model="Category.CategoryID" /></div>
-       <div class="category-name">Ten danh muc: <input v-model="Category.CategoryName" /></div>
-       <div class="sub-category">Danh muc con: <input v-model="Category.SubCategory" /></div>
+       <div class="category-code">Mã danh mục: <input v-model="Category.CategoryCode" /></div>
+       <div class="category-name">Tên danh mục: <input v-model="Category.CategoryName" /></div>
+       <div class="sub-category">Danh mục con: <input v-model="Category.SubCategory" /></div>
        <div class="btn-group">
-            <button @click="addClick">Them</button>
-            <button >Huy bo</button>
+            <button @click="addClick">Thêm mới</button>
+            <button @click="updateClick">Cập nhật</button>
        </div>
     </div>
 </template>
@@ -24,8 +24,14 @@ export default {
         return{
             lstHeader: [],
             isAdd: false,
-            Category :{
-                CategoryID : "",
+        }
+    },
+    props:{
+        Category:{
+            type:Object,
+            default:{
+                CategoryID: "",
+                CategoryCode : "",
                 CategoryName : "",
                 SubCategory : ""
             }
@@ -37,12 +43,23 @@ export default {
         },
         addClick(){
             var param = {
-                CategoryID: this.Category.CategoryID,
+                CategoryCode: this.Category.CategoryCode,
                 CategoryName: this.Category.CategoryName,
                 SubCategory: this.Category.SubCategory
             };
             CategoryAPI.insert(param).then(res => {
                 this.$emit("addClick");
+            });
+        },
+        updateClick(){
+            var param = {
+                CategoryID: this.Category.CategoryID,
+                CategoryCode: this.Category.CategoryCode,
+                CategoryName: this.Category.CategoryName,
+                SubCategory: this.Category.SubCategory
+            };
+            CategoryAPI.update1(param).then(res => {
+                this.$emit("updateClick");
             });
         }
     }
@@ -72,12 +89,15 @@ export default {
         display: flex;
 
     }
+    input{
+        padding: 10px;
+    }
     .btn-group{
         width: 100%;
         margin: 20px auto;
         button{
             padding: 10px 20px;
-            
+            margin:0px 30px;
         }
     }
 }
