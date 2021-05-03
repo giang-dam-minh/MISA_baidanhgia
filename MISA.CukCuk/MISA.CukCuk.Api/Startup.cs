@@ -52,6 +52,8 @@ namespace MISA.CukCuk.Api
             services.AddScoped(typeof(IProductService), typeof(ProductService));
             services.AddScoped(typeof(ICategoryRepository), typeof(CategoryRepository));
             services.AddScoped(typeof(ICategoryService), typeof(CategoryService));
+            services.AddScoped(typeof(ICategoryDetailRepository), typeof(CategoryDetailRepository));
+            services.AddScoped(typeof(ICategoryDetailService), typeof(CategoryDetailService));
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MISA.CukCuk.Api", Version = "v1" });

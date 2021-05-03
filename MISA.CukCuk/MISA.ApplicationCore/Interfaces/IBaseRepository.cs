@@ -52,5 +52,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <returns>True nếu tồn tại, false ngược lại</returns>
         /// createdBy: giangdm (20/01/2021)
         bool CheckBySpec(MISAEntity entity,PropertyInfo property,string actionType);
+
+        IEnumerable<MISAEntity> GetByListID(String lstID);
     }
 }

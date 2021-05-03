@@ -11,6 +11,6 @@ namespace MISA.ApplicationCore.Models
         [DisplayName("Mã danh mục")]
         public string CategoryCode { get; set; }
         public string CategoryName { get; set; }
-        public string SubCategory { get; set; }
+        public string ImageCategory { get; set; }
     }
 }

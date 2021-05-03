@@ -26,7 +26,7 @@
         <td>{{product.Price}}</td>
         <td>{{product.Sale}}</td>
         <td>{{product.Description}}</td>
-        <td>{{product.CategoryID}}</td>
+        <td @click="test(getCategoryDetailByID(product.CategoryDetailID))">{{getCategoryDetailByID(product.CategoryDetailID)["CategoryDetailName"]}}</td>
         <td><button @click="deleteProduct(product.ProductID)">Xóa</button></td>
         <td><button @click="editProduct(product)">Sửa</button></td>
       </tr>
@@ -35,6 +35,7 @@
 </template>
 <script>
 import ProductsAPI from "@/api/ProductsAPI.js";
+import CategoryDetailAPI from "@/api/CategoryDetailAPI.js";
 
 export default {
   components: {},
@@ -49,12 +50,23 @@ export default {
         searchValue: "string",
       },
       lstProduct: "",
+      lstHotProduct: "",
+      lstCategoryDetail: ""
     };
   },
   created(){
       this.getData();
   },
   methods: {
+    test(e){
+    },
+    async getCategoryDetailByID(id){
+      var data = [];
+      await CategoryDetailAPI.getById(id).then(res => {
+        data = res.data;
+      });
+      return data;
+    },
     addNew() {
       this.$emit("addNew");
     },

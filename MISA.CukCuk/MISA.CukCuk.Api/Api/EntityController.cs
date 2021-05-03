@@ -36,6 +36,11 @@ namespace MISA.CukCuk.Api.Api
         /// <returns>object</returns>
         /// createdBy: giangdm (20/01/2021)
         #region method
+        [HttpPost("lstID")]
+        public IActionResult GetByListID([FromBody] String lstID)
+        {
+            return Ok(_baseServices.GetByListID(lstID));
+        }
         [HttpGet]
         public IActionResult Get()
         {

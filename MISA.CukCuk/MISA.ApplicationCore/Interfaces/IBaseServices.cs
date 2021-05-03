@@ -43,5 +43,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <returns>Số bản ghi xóa được</returns>
         /// createdBy: giangdm (20/01/2021)
         ServiceResult Delete(int id);
+        IEnumerable<MISAEntity> GetByListID(String lstID);
+
     }
 }

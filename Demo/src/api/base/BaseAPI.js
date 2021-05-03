@@ -37,4 +37,11 @@ export default class BaseAPI {
     delete(id) {
         return BaseAPIConfig.delete(`${this.controler}?id=${id}`);
     }
+    
+    getById(id){
+        return BaseAPIConfig.get(`${this.controler}/id?id=${id}`)
+    }
+    getByListID(lstID){
+        return BaseAPIConfig.post(`${this.controler}/lstID`,`"${lstID}"` );
+    }
 }

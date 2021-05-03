@@ -67,6 +67,12 @@ namespace MISA.ApplicationCore.Services
             return _baseRepository.GetById(id);
         }
 
+        public IEnumerable<MISAEntity> GetByListID(String lstID)
+        {
+           
+            return _baseRepository.GetByListID(lstID);
+        }
+
         public IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest)
         {
             return _baseRepository.Paging(pagingRequest);

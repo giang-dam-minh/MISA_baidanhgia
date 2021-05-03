@@ -17,10 +17,10 @@ namespace MISA.CukCuk.Api.Api
         {
             _productService = productService;
         }
-        [HttpGet("/hot-product")]
+        [HttpGet("hot-product")]
         public IActionResult GetHotProduct()
         {
-            return Ok(1);
+            return Ok(_productService.getHotProduct());
         }
     }
 }

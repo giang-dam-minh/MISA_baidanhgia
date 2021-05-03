@@ -14,14 +14,7 @@
             <li>
                 DANH MỤC SẢN PHẨM
                 <ul>
-                    <li @click="category(1)">MỸ PHẨM TRANG ĐIỂM</li>
-                    <li>HỖ TRỢ ĐIỀU TRỊ</li>
-                    <li>CHĂM SÓC D MẶT</li>
-                    <li>CHĂM SÓC TOÀN THÂN</li>
-                    <li>CHĂM SÓC TÓC</li>
-                    <li>THƯƠNG HIỆU ƯA CHUỘNG</li>
-                    <li>SỨC KHỎE DINH DƯỠNG</li>
-                    <li>CÁC SẢN PHẨM KHÁC</li>
+                    <li @click="categoryClick(category.CategoryID)" v-for="(category,index) in lstCategory" :key="index">{{category.CategoryName.toUpperCase()}}</li>
                 </ul>
             </li>
             <li>HƯỚNG DẪN MUA HÀNG</li>
@@ -61,13 +54,27 @@
     </div>
 </template>
 <script>
+import CategoryAPI from "@/api/CategoryAPI.js";
 export default {
    name: "BasePage",
+   data(){
+       return{
+           lstCategory: []
+       }
+   },
+   created(){
+       var me = this;
+       CategoryAPI.getAll().then(res => {
+           me.lstCategory = res.data;
+       }).catch(err => {
+
+       })
+   },
    methods:{
        logoClick(id){
            this.$router.push("/");
        },
-       category(id){
+       categoryClick(id){
            this.$router.push(`/category/${id}`)
        },
        cartClick(){

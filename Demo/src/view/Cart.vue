@@ -12,22 +12,22 @@
                     <th>Số lượng</th>
                     <th>Thành Tiền</th>
                 </tr>
-                <tr>
+                <tr v-for="(cart,index) in dataCart" :key="index">
                     <td>
-                        <img height="95" width="79" src="http://imua.com.vn/images/product/Tat-Phun-Chan-Stocking-Nudv-Han-Quoc-Che-khuyet-Diem-Va-Chong-Nang-Cho-Da-.jpg">
+                        <img height="120" width="100" :src="'data:image/png;base64,' + getDataPropertyProduct('Image',cart.ID)">
                     </td>
                     <td style="padding:10px">
-                        <div class="product-name f-s-10 f-w-b">Tất Phun Chân Stocking Nudv Hàn Quốc - Che khuyết Điểm Và Chống Nắng Cho Da</div>
-                        <div class="price m-t-10"><span>220.000 </span>- <span class="line-through">250.000</span></div>        
+                        <div class="product-name f-s-10 f-w-b">{{getDataPropertyProduct('ProductName',cart.ID)}} </div>
+                        <div class="price m-t-10"><span>{{getDataPropertyProduct('Price',cart.ID) - (getDataPropertyProduct('Price',cart.ID)*getDataPropertyProduct('Sale',cart.ID)/100)}}</span>- <span class="line-through">{{getDataPropertyProduct('Price',cart.ID)}}</span></div>        
                     </td>
-                    <td style="text-align:center"><input style="padding: 5px" type="number" min="0" max="100" v-model="quanlity" /></td>
-                    <td style="text-align:center" >220.000</td>
+                    <td style="text-align:center"><input style="padding: 5px" type="number" min="0" max="100" v-model="cart.Quanlity" /></td>
+                    <td style="text-align:center">{{(getDataPropertyProduct('Price',cart.ID) - (getDataPropertyProduct('Price',cart.ID)*getDataPropertyProduct('Sale',cart.ID)/100))*cart.Quanlity}}</td>
                 </tr>
                 <tr style="text-align:right">
                     <td></td>
                     <td></td>
                     <td></td>
-                    <td style="padding:10px">Tạm tính: <span class="cl-b f-w-b">220.00</span></td>
+                    <td style="padding:10px">Tạm tính: <span class="cl-b f-w-b">{{getTotal()}}</span></td>
                 </tr>
                  <tr style="text-align:right">
                       <td></td>
@@ -41,7 +41,7 @@
                     <td></td>
                     <td></td>
                     <td style="padding:10px">
-                        Tổng thanh toán: <span class="cl-b f-w-b">230.00</span>
+                        Tổng thanh toán: <span class="cl-b f-w-b">{{getTotal() + 10000}}</span>
                     </td>
                 </tr>
             </table>
@@ -76,12 +76,60 @@
 </template>
 
 <script>
+import ProductsAPI from "@/api/ProductsAPI.js";
 import BasePage from '../components/BasePage.vue'
 export default {
   components: { BasePage },
     data(){
         return{
             quanlity:  1,
+            lstProduct: [],
+            dataCart : []
+        }
+    },
+    async created(){
+        await this.getProductInLocal();
+    },
+    methods:{
+        getProductInLocal(){
+            var me = this;
+            this.dataCart = JSON.parse(localStorage.getItem("dataCart"));
+            var lstProductID = []
+            this.dataCart.forEach(item => {
+                lstProductID.push(item.ID);
+            })
+            lstProductID = lstProductID.join(",");
+            ProductsAPI.getByListID(lstProductID).then(res => {
+                me.lstProduct = res.data;
+            }).catch(err => {
+            })
+         
+        },
+        getDataPropertyProduct(property,id){
+            var data = [];
+            this.lstProduct.forEach(item => {
+                if(item.ProductID == id){
+                    data = item[property];
+                }
+            })
+            return data;
+        },
+        getTotal(){
+            var me = this;
+            var total = 0;
+            this.dataCart.forEach(item =>{
+                var price = 0;
+                var sale = 0;
+                me.lstProduct.filter(ele => {
+                    if(ele.ProductID == item.ID){
+                        price = ele.Price;
+                        sale = ele.Sale;
+                    }
+                })
+                debugger
+                total += (price*item.Quanlity- price*item.Quanlity*sale/100);
+            })
+            return total;
         }
     }
 }

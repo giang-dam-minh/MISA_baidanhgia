@@ -1,17 +1,17 @@
 <template>
   <div>
     <div class="left">
-      <AddCatrgory
+      <AddCatrgoryDetail
         @addClick="listenAddClick"
         :Category="Category"
-      ></AddCatrgory>
+      ></AddCatrgoryDetail>
     </div>
     <div class="right">
       <table border="1px solid #e5e5e5">
         <tr>
-          <th style="width: 10px"><input type="checkbox" /></th>
-          <th style="width: 50px">Mã danh mục</th>
-          <th style="width: 50px">Tên danh mục</th>
+          <th style="width: 50px">Mã danh mục con</th>
+          <th style="width: 50px">Danh mục cha</th>
+          <th style="width: 50px">Tên danh mục con</th>
           <th style="width: 50px"></th>
         </tr>
         <tr
@@ -19,11 +19,9 @@
           v-for="(item, index) in dataSourceX"
           :key="index"
         >
-          <td style="width: 10px; text-align: center">
-            <input @click="selectItem(item.CategoryID)" type="checkbox" />
-          </td>
-          <td style="width: 50px">{{ item.CategoryCode }}</td>
-          <td style="width: 50px">{{ item.CategoryName }}</td>
+          <td style="width: 50px">{{ item.CategoryDetailCode }}</td>
+          <td style="width: 50px">{{ getCategoryNameById(item.CategoryID) }}</td>
+          <td style="width: 50px">{{ item.CategoryDetailName }}</td>
           <td style="width: 50px">
             <button @click="deleteRow(item.CategoryID)">Xoa</button>
           </td>
@@ -53,15 +51,16 @@
   </div>
 </template>
 <script>
-import AddCatrgory from "@/viewAdmin/Category/AddCategory.vue";
+import AddCatrgoryDetail from "@/viewAdmin/CategoryDetail/AddCategoryDetail.vue";
+import CategoryDetailAPI from "@/api/CategoryDetailAPI.js";
 import CategoryAPI from "@/api/CategoryAPI.js";
 export default {
   components: {
-    AddCatrgory,
+    AddCatrgoryDetail,
   },
   data() {
     return {
-      api: CategoryAPI,
+      api: CategoryDetailAPI,
       addMode: true,
       lstHeader: null,
       isAdd: false,
@@ -78,12 +77,19 @@ export default {
         searchValue: "string",
       },
       lsSelect: "",
+      lstCategory: []
     };
   },
   created() {
     this.getData();
+    CategoryAPI.getAll().then(res => {
+        this.lstCategory = res.data;
+    })
   },
   methods: {
+    getCategoryNameById(id){
+        return this.lstCategory.filter(item => item.CategoryID == id)[0].CategoryName;
+    },
     deleteRow(id) {
       this.api
         .delete(id)
@@ -102,7 +108,7 @@ export default {
       this.getData();
     },
     getData() {
-      CategoryAPI.paging(this.pagingRequest)
+      CategoryDetailAPI.paging(this.pagingRequest)
         .then((res) => {
           this.dataSourceX = res.data;
         })

@@ -1,10 +1,16 @@
 <template>
     <div class="content-add-category">
         <div class="title f-s-20 f-w-b cl-b">
-       Quản lý danh mục sản phẩm
+       Quản lý danh mục con
         </div>
-       <div class="category-code">Mã danh mục: <input v-model="Category.CategoryCode" /></div>
-       <div class="category-name">Tên danh mục: <input v-model="Category.CategoryName" /></div>
+       <div class="category-code">Mã danh mục con: <input v-model="CategoryDetail.CategoryDetailCode" /></div>
+       <div class="category-name">
+            Danh mục cha:
+            <select v-model="CategoryDetail.CategoryID">
+                <option :value="category.CategoryID" v-for="(category,index) in lstCategory" :key="index">{{category.CategoryName}}</option>
+            </select>
+        </div>
+       <div class="sub-category">Tên danh mục con: <input v-model="CategoryDetail.CategoryDetailName" /></div>
        <div class="btn-group">
             <button @click="addClick">Thêm mới</button>
             <button @click="updateClick">Cập nhật</button>
@@ -13,8 +19,8 @@
 </template>
 <script>
 import PopupAdd from "@/components/PopupAdd.vue";
+import CategoryDetailAPI from "@/api/CategoryDetailAPI.js";
 import CategoryAPI from "@/api/CategoryAPI.js";
-
 export default {
     components:{
         PopupAdd
@@ -23,18 +29,27 @@ export default {
         return{
             lstHeader: [],
             isAdd: false,
+            lstCategory: []
         }
     },
     props:{
-        Category:{
+        CategoryDetail:{
             type:Object,
             default:{
-                CategoryID: "",
-                CategoryCode : "",
-                CategoryName : "",
-                SubCategory : ""
+                CategoryDetailID: "1",
+                CategoryDetailCode : "",
+                CategoryDetailName : "",
+                CategoryID : ""
             }
         }
+    },
+    created(){
+        var me = this;
+        CategoryAPI.getAll().then(res=>{
+            me.lstCategory = res.data;
+        }).catch(err =>{
+
+        })
     },
     methods:{
         addNew(){
@@ -42,11 +57,11 @@ export default {
         },
         addClick(){
             var param = {
-                CategoryCode: this.Category.CategoryCode,
-                CategoryName: this.Category.CategoryName,
-                SubCategory: this.Category.SubCategory
+                CategoryDetailCode: this.CategoryDetail.CategoryDetailCode,
+                CategoryDetailName: this.CategoryDetail.CategoryDetailName,
+                CategoryID: this.CategoryDetail.CategoryID
             };
-            CategoryAPI.insert(param).then(res => {
+            CategoryDetailAPI.insert(param).then(res => {
                 this.$emit("addClick");
             });
         },

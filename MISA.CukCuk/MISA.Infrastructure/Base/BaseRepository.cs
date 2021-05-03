@@ -100,7 +100,13 @@ namespace MISA.Infrastructure.Base
         /// createdBy: giangdm (20/01/2021)
         public IEnumerable<MISAEntity> GetById(string id)
         {
-            return _dbConnection.Query<MISAEntity>($"select * from {_tableName} where {_tableName}Id= '{id}'");
+            return _dbConnection.Query<MISAEntity>($"select * from {_tableName}s where {_tableName}Id= '{id}'");
+        }
+
+        public IEnumerable<MISAEntity> GetByListID(string lstID)
+        {
+            var sql = $"select * from {_tableName}s where {_tableName}ID in ({lstID})";
+            return _dbConnection.Query<MISAEntity>(sql);
         }
 
         public IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest)

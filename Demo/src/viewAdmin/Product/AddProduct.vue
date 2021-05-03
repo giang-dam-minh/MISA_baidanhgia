@@ -11,8 +11,8 @@
         <div class="flex">Mô tả: <input v-model="Product.Description" /></div>
         <div  class="flex">
             Danh mục sản phẩm:
-            <select v-model="Product.CategoryID">
-                <option :value="item.CategoryID" v-for="(item,index) in lstCategory" :key="index">{{item.CategoryName}}</option>
+            <select v-model="Product.CategoryDetailID">
+                <option :value="item.CategoryDetailID" v-for="(item,index) in lstCategory" :key="index">{{item.CategoryDetailName}}</option>
             </select>
          </div>
       </div>
@@ -27,7 +27,7 @@
 </template>
 <script>
 import ProductsAPI from "@/api/ProductsAPI.js";
-import CategoryAPI from "@/api/CategoryAPI.js";
+import CategoryDetailAPI from "@/api/CategoryDetailAPI.js";
 
 export default {
   components: {
@@ -57,7 +57,7 @@ export default {
         Sale: "",
         Image: "",
         Description: "",
-        CategoryID: 12,
+        CategoryDetailID: 12,
       },
     },
      formMode: {
@@ -66,7 +66,6 @@ export default {
       },
   },
   created(){
-    debugger
     this.getLstCategory();
     this.formMode==1?this.title="Thêm mới":this.title="Sửa";
 
@@ -126,7 +125,7 @@ export default {
     },
     getLstCategory(){
         var me = this;
-        CategoryAPI.getAll().then(res => {
+        CategoryDetailAPI.getAll().then(res => {
             me.lstCategory = res.data;
         }).catch(err => {
 

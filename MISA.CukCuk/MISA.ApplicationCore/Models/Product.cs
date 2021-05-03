@@ -13,8 +13,8 @@ namespace MISA.ApplicationCore.Models
 		public string ProductName { get; set; }
         public double Price { get; set; }
         public double Sale { get; set; }
-		public byte[] Image { get;set;}
+		public string Image { get;set;}
 		public string Description { get; set; }
-		public int CategoryID { get; set; }
+		public int CategoryDetailID { get; set; }
 	}
 }

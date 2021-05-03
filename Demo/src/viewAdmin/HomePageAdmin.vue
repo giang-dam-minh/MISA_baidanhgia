@@ -4,7 +4,8 @@
       <div class="logo"><img src="https://imua.com.vn//images/logo.png" /></div>
       <div class="">Quan ly website</div>
       <ul>
-        <li @click="changeMenu('category')">Danh muc san pham</li>
+        <li @click="changeMenu('category')">Danh mục sản phẩm</li>
+        <li @click="changeMenu('subCategory')">Chi tiết danh mục sản phẩm</li>
         <li @click="changeMenu('product')">San pham</li>
         <li>Gio hang</li>
       </ul>
@@ -23,12 +24,17 @@
         @addNew="addNewProduct"
         @editProduct="addNewProduct"
       ></EditProduct>
-      <EditCategory  v-if="formMode == 'category'"></EditCategory>
+      <EditCategory
+        v-if="formMode == 'category'"
+      ></EditCategory>
       <AddProduct
         v-if="formMode == 'addProduct'"
         :Product="dataProduct" 
         :formMode="formModeProduct" 
       ></AddProduct>
+      <EditCategoryDetail
+        v-if="formMode=='subCategory'"
+      ></EditCategoryDetail>
     </div>
   </div>
 </template>
@@ -36,11 +42,13 @@
 import EditProduct from "@/viewAdmin/Product/EditProduct.vue"
 import AddProduct from "@/viewAdmin/Product/AddProduct.vue"
 import EditCategory from "@/viewAdmin/Category/EditCategory.vue"
+import EditCategoryDetail from "@/viewAdmin/CategoryDetail/EditCategoryDetail.vue"
 export default {
   components:{
     EditProduct,
     EditCategory,
-    AddProduct
+    AddProduct,
+    EditCategoryDetail
   },
   data(){
     return{
