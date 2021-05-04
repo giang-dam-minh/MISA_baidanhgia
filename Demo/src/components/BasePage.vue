@@ -20,7 +20,7 @@
             <li>HƯỚNG DẪN MUA HÀNG</li>
             <li>TIN NỔI BẬT</li>
             <li>SẢN PHẨM SALE OFF</li>
-            <li>KHO QUÀ TẶNG</li>
+            <li @click="follow">THEO DÕI ĐƠN HÀNG</li>
             <li>LIỆN HỆ</li>
         </ul>
        </div>
@@ -71,6 +71,9 @@ export default {
        })
    },
    methods:{
+       follow(){
+           this.$router.push("/follow");
+       },
        logoClick(id){
            this.$router.push("/");
        },

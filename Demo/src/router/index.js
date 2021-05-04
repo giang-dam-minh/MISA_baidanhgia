@@ -5,6 +5,7 @@ import ProductDetail from "@/view/ProductDetail.vue";
 import Category from "@/view/Category.vue";
 import Cart from "@/view/Cart.vue";
 import HomePageAdmin from "@/viewAdmin/HomePageAdmin.vue";
+import FollowCart from "@/view/FollowCart/FollowCart.vue"
 Vue.use(Router)
 
 export default new Router({
@@ -34,6 +35,11 @@ export default new Router({
       path: "/admin",
       name: "HomePageAdmin",
       component: HomePageAdmin
+    },
+    {
+      path:"/follow",
+      name: FollowCart,
+      component: FollowCart
     }
   ]
 })

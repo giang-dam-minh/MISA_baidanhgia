@@ -1,9 +1,11 @@
 <template>
     <base-page>
+    <div class="title">Theo dõi đơn hàng</div>
     <div style="margin-top: 20px;" class="cart">
-        <div class="m-b-10 cl-b f-s-20">Gio hang</div>
-        <div class="m-b-10">Gio hang co: <span class="f-w-b"> 1 san pham </span> </div>
-        <div class=" m-b-10">Tong tien:<span class="cl-b"> 230.000</span></div>
+        <div class="m-b-10 cl-b f-s-20">Đơn hàng 1</div>
+        <div class="m-b-10">Đơn hàng có: <span class="f-w-b"> 1 sản phẩm </span> </div>
+        <div class=" m-b-10">Tổng tiền:<span class="cl-b"> 230.000</span></div>
+        <div class=" m-b-10">Trạng thái:<span class="cl-b"> Đã xác nhận</span></div>
         <div class="table-detail">
             <table border="1px solid #e5e5e5">
                 <tr>
@@ -46,8 +48,7 @@
                 </tr>
             </table>
         </div>
-    </div>
-    <div class="address-info">
+        <div class="address-info">
         <div class="title cl-b f-s-20">Thông tin địa chỉ nhận hàng</div>
         <div class="form">
             <form>
@@ -66,20 +67,21 @@
                 <div class="name">
                     <textarea  v-model="cart.Note" type="text-area" placeholder="Ghi chú đơn hàng" />
                 </div>
-                <div class="btnConfirmOrder">
+                <!-- <div class="btnConfirmOrder">
                     <button @click="completeCart">Hoàn tất đơn hàng</button>
-                </div>
+                </div> -->
             </form>
         </div>
     </div>
+    </div>
+    
     </base-page>
 </template>
 
 <script>
 import ProductsAPI from "@/api/ProductsAPI.js";
 import CartAPI from "@/api/CartAPI.js";
-import CartDetailAPI from "@/api/CartDetailAPI.js";
-import BasePage from '../components/BasePage.vue'
+import BasePage from '../../components/BasePage.vue'
 export default {
   components: { BasePage },
     data(){
@@ -88,7 +90,6 @@ export default {
             lstProduct: [],
             dataCart : [],
             cart: {
-                CartID: "",
                 CustomerName: "",
                 Address: "",
                 PhoneNumber: "",
@@ -96,11 +97,6 @@ export default {
                 Note: "",
                 Total: ""
             },
-            cartDetail:{
-                CartID: "",
-                ProductID: "",
-                Quanlity: ""
-            }
         }
     },
     async created(){
@@ -154,24 +150,10 @@ export default {
            }
             
         },
-        async completeCart(){
-            var me = this;
-            var res = await CartAPI.getIdMax();
-            if(res.data.length>0){
-                this.cart.CartID = res.data[0].CartID + 1;
-            }
-            else{
-                this.cart.CartID = 1;
-            }
+        completeCart(){
             this.cart.Total = this.getTotal();
             CartAPI.insert(this.cart).then(res => {
-                me.cartDetail.CartID = me.cart.CartID;
-                me.dataCart.forEach(item => {
-                    me.cartDetail.ProductID = item.ID;
-                    me.cartDetail.Quanlity = item.Quanlity;
-                    CartDetailAPI.insert(me.cartDetail);
-                })
-               
+                debugger
             }).catch(err =>{
                 debugger
             })
