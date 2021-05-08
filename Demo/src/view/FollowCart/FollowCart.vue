@@ -1,8 +1,8 @@
 <template>
     <base-page>
     <div class="title">Theo dõi đơn hàng</div>
-    <div style="margin-top: 20px;" class="cart">
-        <div class="m-b-10 cl-b f-s-20">Đơn hàng 1</div>
+    <div v-for="(cartID,index) in JSON.parse(lstCartID)"  :key="index" style="margin-top: 20px;" class="cart">
+        <div class="m-b-10 cl-b f-s-20">Đơn hàng {{index+1}}</div>
         <div class="m-b-10">Đơn hàng có: <span class="f-w-b"> 1 sản phẩm </span> </div>
         <div class=" m-b-10">Tổng tiền:<span class="cl-b"> 230.000</span></div>
         <div class=" m-b-10">Trạng thái:<span class="cl-b"> Đã xác nhận</span></div>
@@ -14,16 +14,16 @@
                     <th>Số lượng</th>
                     <th>Thành Tiền</th>
                 </tr>
-                <tr v-for="(cart,index) in dataCart" :key="index">
+                <tr v-for="(cart,index) in getListProductByCartID(cartID)" :key="index">
                     <td>
-                        <img height="120" width="100" :src="'data:image/png;base64,' + getDataPropertyProduct('Image',cart.ID)">
+                        <img height="120" width="100" :src="'data:image/png;base64,' + cart.Image">
                     </td>
                     <td style="padding:10px">
-                        <div class="product-name f-s-10 f-w-b">{{getDataPropertyProduct('ProductName',cart.ID)}} </div>
-                        <div class="price m-t-10"><span>{{getDataPropertyProduct('Price',cart.ID) - (getDataPropertyProduct('Price',cart.ID)*getDataPropertyProduct('Sale',cart.ID)/100)}}</span>- <span class="line-through">{{getDataPropertyProduct('Price',cart.ID)}}</span></div>        
+                        <div class="product-name f-s-10 f-w-b">{{cart.ProductName}} </div>
+                        <div class="price m-t-10"><span>{{cart.Price - (cart.Price*cart.Sale/100)}}</span>- <span class="line-through">{{cart.Price}}</span></div>        
                     </td>
-                    <td style="text-align:center"><input style="padding: 5px" type="number" min="0" max="100" v-model="cart.Quanlity" /></td>
-                    <td style="text-align:center">{{(getDataPropertyProduct('Price',cart.ID) - (getDataPropertyProduct('Price',cart.ID)*getDataPropertyProduct('Sale',cart.ID)/100))*cart.Quanlity}}</td>
+                    <td style="text-align:center">{{getQuanlityByCartID(cartID)}}</td>
+                    <td style="text-align:center">{{(cart.Price - (cart.Price*cart.Sale/100))*getQuanlityByCartID(cartID)}}</td>
                 </tr>
                 <tr style="text-align:right">
                     <td></td>
@@ -81,6 +81,7 @@
 <script>
 import ProductsAPI from "@/api/ProductsAPI.js";
 import CartAPI from "@/api/CartAPI.js";
+import CartDetailAPI from "@/api/CartDetailAPI.js"
 import BasePage from '../../components/BasePage.vue'
 export default {
   components: { BasePage },
@@ -89,6 +90,8 @@ export default {
             quanlity:  1,
             lstProduct: [],
             dataCart : [],
+            lstCartID: [],
+            lstCartDetail: [],
             cart: {
                 CustomerName: "",
                 Address: "",
@@ -100,21 +103,101 @@ export default {
         }
     },
     async created(){
+        var me = this;
         await this.getProductInLocal();
     },
-    methods:{
-       async getProductInLocal(){
+    watch:{
+        lstCartDetail(val){
+
             var me = this;
-            this.dataCart = JSON.parse(localStorage.getItem("dataCart"));
-            var lstProductID = []
-            this.dataCart.forEach(item => {
-                lstProductID.push(item.ID);
+            me.lstProduct = [];
+            val.forEach(item => {
+                item.filter(ele => {
+                    ProductsAPI.getById(ele.ProductID).then(res => {
+                       if(me.checkValidProduct(res.data[0].ProductID)){
+                           debugger
+                           me.lstProduct.push(res.data);
+                       };
+                    })
+                })
             })
-            lstProductID = lstProductID.join(",");
-           await ProductsAPI.getByListID(lstProductID).then(res => {
-                me.lstProduct = res.data;
-            }).catch(err => {
-            })
+        },
+        lstCartID(val){
+        },
+        lstProduct(val){
+        }
+    },
+    methods:{
+        checkValidProduct(id){
+            try {
+                this.lstProduct.forEach(item => {
+                    if(item[0].ProductID == id){
+                        debugger
+                        return false
+                    }
+                })
+                return true;
+            } catch (error) {
+                
+            }
+        },
+        getQuanlityByCartID(id){
+            try {
+                var quanlity = "";
+                this.lstCartDetail.forEach(item => {
+                    item.filter(ele => {
+                        if(ele.CartID == id.CartID){
+                            quanlity = ele.Quanlity;
+                        }
+                    })
+                })
+                return quanlity;
+            } catch (error) {
+                
+            }
+            
+        },
+        getListProductByCartID(id){
+            var me = this;
+            try {
+                var lstProduct = [];
+                this.lstCartDetail.forEach(item => {
+                    item.filter(ele => {
+                        me.lstProduct.forEach(el => {
+                            if(ele.ProductID == el[0].ProductID){
+                                lstProduct.push(el[0]);
+                            }
+                        })
+                    })
+                })
+                return lstProduct;
+            } catch (error) {
+                
+            }
+        },
+       async getProductInLocal(){
+           var me = this;
+           this.lstCartID = localStorage.getItem("userInfo");
+            if(this.lstCartID){
+                var data = JSON.parse(this.lstCartID);
+                data.forEach(item => {
+                   CartDetailAPI.getByPropertyValue('cartid',item.CartID).then(res => {
+                        me.lstCartDetail.push(res.data);
+                    })
+                })
+            }
+        //     debugger
+        //     var me = this;
+        //     this.dataCart = JSON.parse(localStorage.getItem("dataCart"));
+        //     var lstProductID = []
+        //     this.dataCart.forEach(item => {
+        //         lstProductID.push(item.ID);
+        //     })
+        //     lstProductID = lstProductID.join(",");
+        //    await ProductsAPI.getByListID(lstProductID).then(res => {
+        //         me.lstProduct = res.data;
+        //     }).catch(err => {
+        //     })
          
         },
         getDataPropertyProduct(property,id){

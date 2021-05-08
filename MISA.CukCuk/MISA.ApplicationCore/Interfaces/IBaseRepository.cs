@@ -14,6 +14,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <returns></returns>
         /// createdBy: giangdm (20/01/2021)
         IEnumerable<MISAEntity> Get();
+        IEnumerable<MISAEntity> GetByPropertyValue(string property,string value);
         IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest);
         /// <summary>
         /// Interface Lấy thông tin theo id

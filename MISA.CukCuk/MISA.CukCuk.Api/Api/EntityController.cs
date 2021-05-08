@@ -46,6 +46,11 @@ namespace MISA.CukCuk.Api.Api
         {
             return Ok(_baseServices.GET());
         }
+        [HttpGet("getByPropertyValue")]
+        public IActionResult GetByPropertyValue(string property,string value)
+        {
+            return Ok(_baseServices.GETByPropertyValue(property,value));
+        }
         /// <summary>
         /// API trả về thông tin theo id
         /// </summary>

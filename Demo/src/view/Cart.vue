@@ -109,16 +109,20 @@ export default {
     methods:{
        async getProductInLocal(){
             var me = this;
-            this.dataCart = JSON.parse(localStorage.getItem("dataCart"));
-            var lstProductID = []
-            this.dataCart.forEach(item => {
-                lstProductID.push(item.ID);
-            })
-            lstProductID = lstProductID.join(",");
-           await ProductsAPI.getByListID(lstProductID).then(res => {
-                me.lstProduct = res.data;
-            }).catch(err => {
-            })
+            if(localStorage.getItem("dataCart"))
+            {
+                this.dataCart = JSON.parse(localStorage.getItem("dataCart"));
+                var lstProductID = []
+                this.dataCart.forEach(item => {
+                    lstProductID.push(item.ID);
+                })
+                lstProductID = lstProductID.join(",");
+                await ProductsAPI.getByListID(lstProductID).then(res => {
+                    me.lstProduct = res.data;
+                }).catch(err => {
+                })
+            }
+           
          
         },
         getDataPropertyProduct(property,id){
@@ -171,7 +175,26 @@ export default {
                     me.cartDetail.Quanlity = item.Quanlity;
                     CartDetailAPI.insert(me.cartDetail);
                 })
-               
+                debugger
+                if(localStorage.userInfo){
+                    var userInfo = JSON.parse(localStorage.userInfo);
+                    var data = {
+                        CartID : me.cartDetail.CartID
+                    }
+                    userInfo.push(data);
+                    localStorage.userInfo = JSON.stringify(userInfo);
+
+                }
+                else{
+                    userInfo = [];
+                    var data = {
+                        CartID : me.cartDetail.CartID
+                    }
+                    userInfo.push(data);
+                    localStorage.userInfo = JSON.stringify(userInfo);
+                }
+                localStorage.dataCart = [];
+                
             }).catch(err =>{
                 debugger
             })

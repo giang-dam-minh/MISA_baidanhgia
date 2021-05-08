@@ -30,6 +30,9 @@ export default class BaseAPI {
     update1(data) {
         return axios.put(`http://localhost:56094/api/${this.controler}`, data);
     }
+    getByPropertyValue(property,value){
+        return BaseAPIConfig.get(`${this.controler}/getByPropertyValue?property=${property}&value=${value}`);
+    }
     /**
      * Hàm xóa bản ghi
      * @param {*} id 

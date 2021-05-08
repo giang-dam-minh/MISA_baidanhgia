@@ -109,6 +109,12 @@ namespace MISA.Infrastructure.Base
             return _dbConnection.Query<MISAEntity>(sql);
         }
 
+        public IEnumerable<MISAEntity> GetByPropertyValue(string property, string value)
+        {
+            var sql = $"select * from {_tableName}s where {property} = '{value}'";
+            return _dbConnection.Query<MISAEntity>(sql);
+        }
+
         public IEnumerable<MISAEntity> Paging(PagingRequest pagingRequest)
         {
             var param = new DynamicParameters();

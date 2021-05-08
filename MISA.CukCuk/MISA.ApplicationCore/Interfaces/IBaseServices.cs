@@ -13,6 +13,7 @@ namespace MISA.ApplicationCore.Interfaces
         /// <returns></returns>
         /// createdBy: giangdm (20/01/2021)
         IEnumerable<MISAEntity> GET();
+        IEnumerable<MISAEntity> GETByPropertyValue(string property,string value);
         /// <summary>
         /// Interface Lấy thông tin theo id
         /// </summary>
